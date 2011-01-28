@@ -31,7 +31,7 @@
 /* ToDo: unset variables */
 /* Set package info */
 define('PKG_NAME','siteatoz');
-define('PKG_VERSION','1.0.0');
+define('PKG_VERSION','1.0.1');
 define('PKG_RELEASE','Beta1');
 define('PKG_CATEGORY','SiteAtoZ');
 

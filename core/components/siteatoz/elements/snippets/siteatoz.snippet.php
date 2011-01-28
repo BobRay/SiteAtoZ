@@ -2,7 +2,7 @@
 /**
  * SiteAtoZ snippet
  * @author Bob Ray <http://bobsguides.com>
- * @version 1.0.0
+ * @version 1.0.1
  * 01/25/2011
  *
  * This snippet was inspired by the work of
@@ -34,6 +34,7 @@
  * Optional parameters:
  * ---------------
  * @property useNumbers - (boolean) Put a number array in front of the alphabet' default '0'
+ * @property combineNumbers (boolean) group 0-9 titles together; default '0'
  * @property useAlphabet - (boolean) Use the Alphabet; default: '1'
  * @property headingSeparator - (string) separator to use between letters in heading; Default '&nbsp|&nbsp;'
  * @property alphabetHeadingStart - (string) Letter to start with; Default: 'A'
@@ -47,6 +48,8 @@
  * @property where will be ignored (it conflicts with the selection by initial letter).
  */
 
+/* http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
+
 $sp =& $scriptProperties;
 $documentId = $modx->resource->get('id');
 
@@ -59,9 +62,14 @@ $title = empty($sp['title'])? 'pagetitle' : $sp['title'];
 $alphabetHeadingStart = (empty($sp['alphabetHeadingStart']))? 'A' : $sp['alphabetHeadingStart'];
 $alphabetHeadingEnd = (empty($sp['alphabetHeadingEnd']))? 'Z' : $sp['alphabetHeadingEnd'];
 $useNumbers = $sp['useNumbers'] === '1'? true : false;
+$combineNumbers = $sp['combineNumbers'] === '1'? true : false;
 $useAlphabet = $sp['useAlphabet'] === '0'? false: true;
 
-$n = range('0','9');
+if ($combineNumbers) {
+    $n = array('[0-9]');
+} else {
+    $n = range('0','9');
+}
 $a = range($alphabetHeadingStart, $alphabetHeadingEnd);
 $alphabet = array();
 
@@ -77,9 +85,15 @@ $whereProperty = !empty($sp['where'])? $sp['where'] : false;
 
 $noData = true;
 foreach ($alphabet as $k=>$v) {
-    $local_where = array(
-        $title . ':LIKE' => $v . '%',
-    );
+    if ($combineNumbers && ($v == '[0-9]') ) {
+        $local_where = array(
+            $title . ':REGEXP' => '^[0-9]',
+        );
+    } else {
+        $local_where = array(
+            $title . ':LIKE' => $v . '%',
+        );
+    }
     /* ToDo: Some day this may work */
     /*if ($whereProperty !== false) {
         $w = $modx->fromJSON($sp['where']);

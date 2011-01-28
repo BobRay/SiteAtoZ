@@ -1,5 +1,9 @@
 Changelog for SiteAtoZ
 
+Version 1.0.1
+-------------
+Added option to combine number categories
+
 SiteAtoZ 1.0.0
 -------------------
 Initial Version
