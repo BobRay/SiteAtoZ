@@ -11,7 +11,7 @@
 /** This snippet makes use of getResources to list records alphabetically, with an A to Z header of links to anchors in the text.
  *
  * By far the best practice to get it working is to call getResources directly with
- * a snippet tag in a resources. Once you get it working, and it shows every resource
+ * a snippet tag in a resource. Once you get that working, and it shows every resource
  * you want to index, just change "getResources" to "SiteAtoZ" in the snippet tag.
  * Once that's working, you can add any of the optional parameters listed below.
  *
@@ -21,7 +21,7 @@
  * The &resources parameter can only be used to exclude resources (&resources=`-12,19`),
  * using it to include docs not work because getResources will include those resources
  * regardless of any other criteria and they will be included in every alphabet section.
- * The &where parameter will be ignored becuase it interferes with the selection by initial letter.
+ * The &where parameter will be ignored because it interferes with the selection by initial letter.
  *
  * Simple use:
  * [[!SiteAtoZ? &parents=`6` &tpl=`MyTpl`]]
@@ -44,7 +44,7 @@
  * @property noData - (string) string to show if search comes up empty
  *
  * All other parameters are those of getResources. They should all work as they do for getResources with two exceptions:
- * @property resources can be used to exclude documents, but not to include them (@property resources=`-2,24`).
+ * @property resources can be used to exclude documents (e.g., &resources=`-2,24`), but not to include them .
  * @property where will be ignored (it conflicts with the selection by initial letter).
  */
 
