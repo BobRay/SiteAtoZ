@@ -1,0 +1,58 @@
+/* surrounds entire output */
+/* set a height large enough to hold longest set of entries
+   when using JS to keep things from bouncing around */
+div.az-outer {
+    margin:30px 0px 0px 25px ;
+    font-family: Georgia,"Times New Roman", serif;
+    padding: 15px 20px 10px 30px;
+    background-color:#eeeeee;
+}
+/* All results for a single letter; only exists when using JS */
+div.az-section {
+    display:block;
+    color:black;
+    margin-left:20px;
+    margin-bottom:0px;
+}
+/* Heading letter + separator for empty items */
+/* Set to display:none to hide */
+div.az-no-results {
+    display:inline;
+    color:#dcdcdc;
+}
+/* The active letters in the header + separator */
+div.az-headeritem {
+    display:inline;
+    color:black;
+}
+/* Just the active letters; overrides rule above */
+a.az-headeritem {
+    color:black;
+    font-weight:bold;
+    text-decoration:none;
+}
+/* Each line of results */
+div.az-item {
+    display:block;
+    color:black;
+    margin-left:20px;
+}
+/* Separator character for heading letters */
+span.az-separator {
+    color:#808080;
+    display:inline;
+}
+/* Anchor lines */
+p.az-anchor {
+    display:block;
+}
+span.az-anchor-letter {
+    font-family:arial,sans-serif;
+    color:black;
+    font-weight:bold;
+    margin:0;
+}
+/* Message when there are no results at all */
+p.az-noData {
+    color:red;
+}

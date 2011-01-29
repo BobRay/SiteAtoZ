@@ -41,7 +41,9 @@
  * @property alphabetHeadingEnd - (string) Letter to end with; Default 'Z'
  * @property title - (string) Field to used for search; Default: pagetitle
  * @property headingLinksTpl - (string) A tpl containing the entire A-Z heading (useful if you'd like to use images)
- * @property noData - (string) string to show if search comes up empty
+ * @property noData - (string) String to show if search comes up empty
+ * @property cssFile - (string) Path to css file
+ * @property useJS - (boolean) - Use JS to hide entries until link is clicked.
  *
  * All other parameters are those of getResources. They should all work as they do for getResources with two exceptions:
  * @property resources can be used to exclude documents (e.g., &resources=`-2,24`), but not to include them .
@@ -50,22 +52,29 @@
 
 /* JS script from: http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
 
+/* These two lines allow the snippet to run in development environments if the two system settings exist */
 $azAssetsUrl =  $modx->getOption('az_base_url', null, $modx->getOption('assets_url') . 'components/siteatoz/assets/');
 $azAssetsPath =  $modx->getOption('az_base_path', null, $modx->getOption('assets_path') . 'components/siteatoz/assets/');
 
+/* save some typing */
 $sp =& $scriptProperties;
+
 $documentId = $modx->resource->get('id');
 
+/* Set CSS file path */
 $cssFile = $modx->getOption('cssFile', $sp, $azAssetsUrl . 'css/siteatoz.css');
 if (empty($cssFile)) {
     $cssFile = $azAssetsUrl . 'css/siteatoz.css';
 }
 $modx->regClientCSS($cssFile);
 
+/* Set Tpl chunk to use for each item */
 $sp['tpl'] = empty($sp['tpl'])? 'AzItemTpl' : $sp['tpl'] ;
 
+/* Set other options */
 $sp['parents'] = empty($sp['parents'])? '0' : $sp['parents'];
-$headingSeparator = empty($sp['headingSeparator'])? '<span class="az-separator">&nbsp;|&nbsp;</span>'. "\n" : $sp['headingSeparator'] . "\n";
+$sp['noData'] = empty($sp['noData'])? 'Sorry, No Resources were Retrieved.' : $sp['noData'];
+$headingSeparator = empty($sp['headingSeparator'])? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</span></div>\n";
 $title = empty($sp['title'])? 'pagetitle' : $sp['title'];
 $alphabetHeadingStart = (empty($sp['alphabetHeadingStart']))? 'A' : $sp['alphabetHeadingStart'];
 $alphabetHeadingEnd = (empty($sp['alphabetHeadingEnd']))? 'Z' : $sp['alphabetHeadingEnd'];
@@ -114,7 +123,7 @@ $whereProperty = !empty($sp['where'])? $sp['where'] : false;
 $noData = true;
 foreach ($alphabet as $k=>$v) {
     if ($useJS) {
-        $output .= "\n\n" . '<div style="display:none;" class="az-section" id="a' . $v . '">' . "\n\n";
+        $output .= "\n\n" . '<div style="display:none;" class="az-section" id="a' . $v . '">' . "\n";
     }
     if ($combineNumbers && ($v == '[0-9]') ) {
         $local_where = array(
@@ -135,16 +144,16 @@ foreach ($alphabet as $k=>$v) {
 
     $ret = $modx->runSnippet('getResources',$sp);
     if (empty($ret)) {
-        $header[] = '<span class="az-no-results">' . $v . '</span>';
+        $header[] = '        <div class="az-no-results">' . $v;
     } else {
         $noData = false; /* found at least one */
         if ($useJS) {
-           $header[] = '<a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" .');">' . $v . '</a>';
-            $output .= ''; // <p class="az-anchor">' . "<a name=\"jump_to_$v\" id=\"jump_to_$v\"></a><strong>" . $v . "</strong></p>\n";
+           $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" .');">' . $v . '</a>';
+            $output .= ''; /* no anchors if using JS */
             $output .= $ret;
         } else {
-            $header[] = '<a class="az-headeritem" href="'.$modx->makeUrl($documentId).'#jump_to_' . $v . '">' . $v . '</a>';
-            $output .= '<p class="az-anchor">' . "<a name=\"jump_to_$v\" id=\"jump_to_$v\"></a><strong>" . $v . "</strong></p>\n";
+            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="'.$modx->makeUrl($documentId).'#jump_to_' . $v . '">' . $v . '</a>';
+            $output .= "\n\n" . '        <p class="az-anchor">' . "<a name=\"jump_to_$v\" id=\"jump_to_$v\"></a>" . '<span class="az-anchor-letter">' . $v . "</span></p>\n";
             $output .= $ret;
         }
     }
@@ -157,5 +166,5 @@ if ($noData === true) {
 }
 $headingLinks = (empty($sp['headingLinksTpl']))? implode($headingSeparator,$header) : $modx->getChunk($sp['headingLinksTpl']);
 
-return '<div class="az-outer">' . $headingLinks . "\n" . '<p class="az-noData">[[+noData]]</p>' . "\n" . $output . '</div>';
+return '    <div class="az-outer">' . "\n" . $headingLinks . "</div>\n" .  '        <p class="az-noData">[[+noData]]</p>' . $output . "\n    </div>";
 
