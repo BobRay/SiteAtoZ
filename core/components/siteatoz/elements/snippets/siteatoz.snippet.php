@@ -48,7 +48,9 @@
  * @property where will be ignored (it conflicts with the selection by initial letter).
  */
 
-/* http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
+/* JS script from: http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
+
+
 
 $sp =& $scriptProperties;
 $documentId = $modx->resource->get('id');
@@ -64,6 +66,9 @@ $alphabetHeadingEnd = (empty($sp['alphabetHeadingEnd']))? 'Z' : $sp['alphabetHea
 $useNumbers = $sp['useNumbers'] === '1'? true : false;
 $combineNumbers = $sp['combineNumbers'] === '1'? true : false;
 $useAlphabet = $sp['useAlphabet'] === '0'? false: true;
+
+$useJS = true;
+$useNumbers = true;
 
 if ($combineNumbers) {
     $n = array('[0-9]');
@@ -81,10 +86,33 @@ if ($useAlphabet) {
 }
 unset($n,$a);
 
+if ($useJS) {
+    $output = '';
+    $jsArray = array();
+    foreach ($alphabet as $k=>$v) {
+        $jsArray[] .= "'a" . $v . "'";
+    }
+    $jsString = implode(',',$jsArray);
+    $startupBlock =
+        "<script type=\"text/javascript\">
+//<![CDATA[
+        var ids= new Array([[+jstring]]);
+        ";
+    $startupBlock = str_replace('[[+jstring]]',$jsString, $startupBlock);
+    $startupBlock .= file_get_contents('c:/xampp/htdocs/addons/assets/mycomponents/siteatoz/assets/components/siteatoz/js/siteatoz.js');
+    $startupBlock .= "
+//]]>
+</script>";
+    $modx->regClientStartupHTMLBlock($startupBlock);
+}
+
 $whereProperty = !empty($sp['where'])? $sp['where'] : false;
 
 $noData = true;
 foreach ($alphabet as $k=>$v) {
+    if ($useJS) {
+        $output .= "\n\n" . '<div style="display:none;" class="az-section" id="a' . $v . '">' . "\n\n";
+    }
     if ($combineNumbers && ($v == '[0-9]') ) {
         $local_where = array(
             $title . ':REGEXP' => '^[0-9]',
@@ -104,12 +132,21 @@ foreach ($alphabet as $k=>$v) {
 
     $ret = $modx->runSnippet('getResources',$sp);
     if (empty($ret)) {
-        $header[] = $v;
+        $header[] = '<span class="az-no-results">' . $v . '</span>';
     } else {
         $noData = false; /* found at least one */
-        $header[] = '<a class="az-headeritem" href="'.$modx->makeUrl($documentId).'#jump_to_' . $v . '">' . $v . '</a>';
-        $output .= '<p class="az-anchor">' . "<a name=\"jump_to_$v\" id=\"jump_to_$v\"></a><strong>" . $v . "</strong></p>\n";
-        $output .= $ret;
+        if ($useJS) {
+           $header[] = '<a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" .');">' . $v . '</a>';
+            $output .= ''; // <p class="az-anchor">' . "<a name=\"jump_to_$v\" id=\"jump_to_$v\"></a><strong>" . $v . "</strong></p>\n";
+            $output .= $ret;
+        } else {
+            $header[] = '<a class="az-headeritem" href="'.$modx->makeUrl($documentId).'#jump_to_' . $v . '">' . $v . '</a>';
+            $output .= '<p class="az-anchor">' . "<a name=\"jump_to_$v\" id=\"jump_to_$v\"></a><strong>" . $v . "</strong></p>\n";
+            $output .= $ret;
+        }
+    }
+    if ($useJS) {
+        $output .= "\n</div>";
     }
 }
 if ($noData === true) {
@@ -117,5 +154,5 @@ if ($noData === true) {
 }
 $headingLinks = (empty($sp['headingLinksTpl']))? implode($headingSeparator,$header) : $modx->getChunk($sp['headingLinksTpl']);
 
-return $headingLinks . "\n" . '<p class="az-noData">[[+noData]]</p>' . "\n" . $output;
+return '<div class="az-outer">' . $headingLinks . "\n" . '<p class="az-noData">[[+noData]]</p>' . "\n" . $output . '</div>';
 

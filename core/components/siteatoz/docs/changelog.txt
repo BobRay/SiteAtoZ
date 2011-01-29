@@ -1,4 +1,7 @@
 Changelog for SiteAtoZ
+Version 1.0.2
+-------------
+Added JS to hide and show sections
 
 Version 1.0.1
 -------------
