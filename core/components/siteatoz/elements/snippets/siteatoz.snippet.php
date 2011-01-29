@@ -166,5 +166,5 @@ if ($noData === true) {
 }
 $headingLinks = (empty($sp['headingLinksTpl']))? implode($headingSeparator,$header) : $modx->getChunk($sp['headingLinksTpl']);
 
-return '    <div class="az-outer">' . "\n" . $headingLinks . "</div>\n" .  '        <p class="az-noData">[[+noData]]</p>' . $output . "\n    </div>";
+return '    <div class="az-outer"><div class="az-header">' . "\n" . $headingLinks . "</div>\n        </div>\n" .  '        <p class="az-noData">[[+noData]]</p>' . $output . "\n    </div>";
 

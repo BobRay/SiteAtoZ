@@ -13,12 +13,19 @@ div.az-section {
     color:black;
     margin-left:20px;
     margin-bottom:0px;
+    height:200px;
 }
 /* Heading letter + separator for empty items */
 /* Set to display:none to hide */
 div.az-no-results {
     display:inline;
     color:#dcdcdc;
+}
+div.az-header {
+    background-color: #bbd9dd;
+    text-align:center;
+    width:1100px;
+    padding:10px 0px 10px 0px;
 }
 /* The active letters in the header + separator */
 div.az-headeritem {
@@ -28,8 +35,10 @@ div.az-headeritem {
 /* Just the active letters; overrides rule above */
 a.az-headeritem {
     color:black;
+    background-color: #99ccff;
     font-weight:bold;
     text-decoration:none;
+    /* background-image:url(assets/components/siteatoz/media/images/header-bg.jpg); */
 }
 /* Each line of results */
 div.az-item {
