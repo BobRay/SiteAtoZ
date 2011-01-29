@@ -50,11 +50,17 @@
 
 /* JS script from: http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
 
-
+$azAssetsUrl =  $modx->getOption('az_base_url', null, $modx->getOption('assets_url') . 'components/siteatoz/assets/');
+$azAssetsPath =  $modx->getOption('az_base_path', null, $modx->getOption('assets_path') . 'components/siteatoz/assets/');
 
 $sp =& $scriptProperties;
 $documentId = $modx->resource->get('id');
 
+$cssFile = $modx->getOption('cssFile', $sp, $azAssetsUrl . 'css/siteatoz.css');
+if (empty($cssFile)) {
+    $cssFile = $azAssetsUrl . 'css/siteatoz.css';
+}
+$modx->regClientCSS($cssFile);
 
 $sp['tpl'] = empty($sp['tpl'])? 'AzItemTpl' : $sp['tpl'] ;
 
@@ -66,9 +72,6 @@ $alphabetHeadingEnd = (empty($sp['alphabetHeadingEnd']))? 'Z' : $sp['alphabetHea
 $useNumbers = $sp['useNumbers'] === '1'? true : false;
 $combineNumbers = $sp['combineNumbers'] === '1'? true : false;
 $useAlphabet = $sp['useAlphabet'] === '0'? false: true;
-
-$useJS = true;
-$useNumbers = true;
 
 if ($combineNumbers) {
     $n = array('[0-9]');
@@ -99,7 +102,7 @@ if ($useJS) {
         var ids= new Array([[+jstring]]);
         ";
     $startupBlock = str_replace('[[+jstring]]',$jsString, $startupBlock);
-    $startupBlock .= file_get_contents('c:/xampp/htdocs/addons/assets/mycomponents/siteatoz/assets/components/siteatoz/js/siteatoz.js');
+    $startupBlock .= file_get_contents($azAssetsPath . 'js/siteatoz.js');
     $startupBlock .= "
 //]]>
 </script>";
