@@ -28,10 +28,9 @@
  * @subpackage build
  */
 
-/* ToDo: unset variables */
 /* Set package info */
 define('PKG_NAME','siteatoz');
-define('PKG_VERSION','1.0.1');
+define('PKG_VERSION','1.0.2');
 define('PKG_RELEASE','Beta1');
 define('PKG_CATEGORY','SiteAtoZ');
 
@@ -135,7 +134,6 @@ if (false) {
     }
 }
 
-/* ToDo: Refactor using Package Option variables */
 /* create category vehicle */
 $attr = array(
     xPDOTransport::UNIQUE_KEY => 'category',
@@ -209,7 +207,7 @@ $builder->putVehicle($vehicle);
 
  /* Because plugins have their own related events, it doesn't
  * work to add them to the category. We'll add them here
- * and ToDo: set the plugin category in the resolver script */
+ * and set the plugin category in the resolver script */
 if ($hasPlugins) {
     $attributes = array (
         xPDOTransport::PRESERVE_KEYS => false,
