@@ -177,9 +177,9 @@ $attr = array(
 $vehicle = $builder->createVehicle($category,$attr);
 
 /* This section transfers every file in the local
- siteatozs/siteatoz/assets directory to the
- target site's assets/siteatoz directory on install.
- It the assets dir. has been renamed or moved, they will still
+ assets/mycomponents/siteatoz/core/components/siteatoz/assets
+ directory to the target site's assets/siteatoz directory on install.
+ If the assets dir. has been renamed or moved, they will still
  go to the right place.
  */
 $vehicle->resolve('file',array(
@@ -188,9 +188,9 @@ $vehicle->resolve('file',array(
     ));
 
 /* This section transfers every file in the local 
- siteatozs/siteatoz/core directory to the
- target site's core/siteatoz directory on install.
- It the core has been renamed or moved, they will still
+ assets/mycomponents/siteatoz/core/components/siteatoz/core
+ directory to the target site's core/siteatoz directory on install.
+ If the core has been renamed or moved, they will still
  go to the right place.
  */
 
