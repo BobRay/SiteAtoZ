@@ -6,7 +6,6 @@ div.az-outer {
     font-family: Georgia,"Times New Roman", serif;
     padding: 15px 20px 10px 30px;
     background-color:#eeeeee;
-    height:200px;
 }
 /* All results for a single letter; only exists when using JS */
 div.az-section {
