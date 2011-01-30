@@ -27,51 +27,20 @@
  */
 
 /* SiteAtoZ Property Description strings */
-$_lang['az_aliastitle_desc'] = "(optional) Set to Yes to use lowercase, hyphenated, page title as alias. default: Yes - If set to No, 'article-(date created)' is used.  Ignored if alias is filled in form.";
-$_lang['az_badwords_desc'] = '(optional) Comma delimited list of words not allowed in document.';
-$_lang['az_cacheable_desc'] = "(optional) Sets the flag to as to whether or not the resource is cached; default: cache_default System Setting for new resources; set to `Parent` to use parent's setting.";
-$_lang['az_cancelid_desc'] = '(optional) Document id to load on cancel; default: http_referer.';
-$_lang['az_clearcache_desc'] = '(optional) When set to Yes, the cache will be cleared after saving the resource; default: Yes.';
-$_lang['az_cssfile_desc'] = '(optional) Name of CSS file to use, or `` for no CSS file; default: siteatoz.css. File should be in assets/siteatoz/css/ directory';
-$_lang['az_errortpl_desc'] = '(optional) Name of Tpl chunk for formatting field errors. Must contain [[+np.error]] placeholder.';
-$_lang['az_fielderrortpl_desc'] = '(optional) Name of Tpl chunk for formatting field errors. Must contain [[+np.error]] placeholder.';
-$_lang['az_footertpl_desc'] = '(optional) Footer Tpl chunk (chunk name) to be inserted at the end of a new document.';
-$_lang['az_groups_desc'] = "(optional) Resource groups to put new document in (no effect with existing docs); set to `parent` to use parent's groups.";
-$_lang['az_headertpl_desc'] = '(optional) Header Tpl chunk (chunk name) to be inserted at the beginning of a new document.';
-$_lang['az_hidemenu_desc'] = "(optional) Sets the flag to as to whether or not the new page shows in the menu; default: hidemenu_default System Setting for new resources; set to `Parent to use parent's setting";
-$_lang['az_initrte_desc'] = '(optional) Initialize rich text editor; set this if there are any rich text fields; default: No';
-$_lang['az_initdatepicker_desc'] = '(optional) Initialize date picker; set this if there are any date fields; default: Yes';
-$_lang['az_language_desc'] = '(optional) Language to use in forms and error messages.';
-$_lang['az_listboxmax_desc'] = '(optional) Maximum length for listboxes. Default is 8 items.';
-$_lang['az_multiplelistboxmax_desc'] = '(optional) Maximum length for multi-select listboxes. Default is 20 items.';
-$_lang['az_parentid_desc'] = '(optional) Folder id where new documents are stored; default: SiteAtoZ folder.';
-$_lang['az_postid_desc'] = '(optional) Document id to load on success; default: the page created or edited.';
-$_lang['az_prefix_desc'] = "(optional) Prefix to use for placeholders; default: 'np.'";
-$_lang['az_published_desc'] = "(optional) Set new resource as published or not (will be overridden by publish and unpublish dates). Set to `parent` to match parent's pub status; default: publish_default system setting.";
-$_lang['az_required_desc'] = '(optional) Comma separated list of fields/tvs to require.';
-$_lang['az_richtext_desc'] = "(optional) Sets the flag to as to whether or Rich Text Editor is used to when editing the page content in the Manager; default: richtext_default System Setting for new resources; set to `Parent` to use parent's setting.";
-$_lang['az_rtcontent_desc'] = '(optional) Use rich text for the content form field.';
-$_lang['az_rtsummary_desc'] = '(optional) Use rich text for the summary (introtext) form field.';
-$_lang['az_searchable_desc'] = "(optional) Sets the flag to as to whether or not the new page is included in site searches; default: search_default System Setting for new resources; set to `Parent` to us parent's setting.";
-$_lang['az_show_desc'] = '(optional) Comma separated list of fields/tvs to show.';
-$_lang['az_readonly_desc'] = '(optional) Comma-separated list of fields that should be read only; does not work with option or textarea fields.';
-$_lang['az_template_desc'] = "(optional) Name of template to use for new document; set to `parent` to use parent's template; for `parent`, &parentid must be set; default: the default_template System Setting.";
-$_lang['az_tinyheight_desc'] = '(optional) Height of richtext areas; default is `400px`.';
-$_lang['az_tinywidth_desc'] = '(optional) Width of richtext areas; default is `95%`.';
-$_lang['az_summaryrows_desc'] = '(optional) Number of rows for the summary field.';
-$_lang['az_summarycols_desc'] = '(optional) Number of columns for the summary field.';
-$_lang['az_outertpl_desc'] = '(optional) Tpl used as a shell for the whole page.';
-$_lang['az_texttpl_desc'] = '(optional) Tpl used for text resource fields.';
-$_lang['az_inttpl_desc'] = '(optional) Tpl used for integer resource fields.';
-$_lang['az_datetpl_desc'] = '(optional) Tpl used for date resource fields and date TVs';
-$_lang['az_booltpl_desc'] = '(optional) Tpl used for Yes/No resource fields (e.g., published, searchable, etc.).';
- $_lang['az_optionoutertpl_desc'] = '(optional) Tpl used for as a shell for checkbox, list, and radio option TVs.';
-$_lang['az_optiontpl_desc'] = '(optional) Tpl used for each option of checkbox and radio option TVs.';
-$_lang['az_listoptiontpl_desc'] = '(optional) Tpl used for each option of listbox TVs.';
-$_lang['az_aliasprefix_desc'] = '(optional) Prefix to be prepended to alias for new documents with an empty alias; alias will be aliasprefix - timestamp';
-$_lang['az_intmaxlength_desc'] = '(optional) Max length for integer input fields; default: 10.';
-$_lang['az_textmaxlength_desc'] = '(optional) Max length for text input fields; default: 60.';
-$_lang['az_hoverhelp_desc'] = '(optional) Show help when hovering over field caption: default: Yes.';
+$_lang['az_parents_desc'] = "(required) Comma-separated list of ID's of container documents you want included (`0` for all docs).";
+$_lang['az_tpl_desc'] = "(required) Tpl chunk used to format each entry; Default 'AzItemTpl.";
+$_lang['az_useNumbers_desc'] = "(optional) Put a number array in front of the alphabet; default 'No'.";
+$_lang['az_combineNumbers_desc'] = "(optional) Group 0-9 titles together; default 'No'.";
+$_lang['az_useAlphabet_desc'] = "(optional) Use the Alphabet; default: 'Yes'.";
+$_lang['az_headingSeparator_desc'] = "(optional) Separator to use between letters in heading; Default '&amp;nbsp|&amp;nbsp;'.";
+$_lang['az_alphabetHeadingStart_desc'] = "(optional) Letter to start with; (use if you want subsets of the alphabet on different pages) Default: 'A'.";
+$_lang['az_alphabetHeadingEnd_desc'] = "(optional) Letter to end with; Default: 'Z'.";
+$_lang['az_title_desc'] = "(optional) Field to used for search (if you change this, make it the first placeholder in your tpl Chunk); Default: 'pagetitle'.";
+$_lang['az_headingLinksTpl_desc'] = "(optional) A tpl containing the entire A-Z heading (useful if you'd like to use images -- Do a 'view source' on the default first to see the required HTML tags or you may end up with invalid HTML).";
+$_lang['az__desc'] = "(optional) ";
+$_lang['az_noData_desc'] = '(optional) String to show if search comes up empty.';
+$_lang['az_cssFile_desc'] = '(optional) Path to css file; defaults to css/siteatoz.css';
+$_lang['az_useJS_desc'] = "(optional) Use JS to hide entries until link is clicked";
 
 
 

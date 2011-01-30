@@ -8,53 +8,112 @@
  * @package siteatoz
  * @subpackage build
  */
-/* ToDo: Add mc_ property0 property1 to search and replace list */
+
 $properties = array(
     array(
-        'name' => 'property1',
-        'desc' => 'mc_property1_desc',
+        'name' => 'parents',
+        'desc' => 'az_parents_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '0',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'tpl',
+        'desc' => 'az_tpl_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'AzItemTpl',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'useNumbers',
+        'desc' => 'az_useNumbers_desc',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => '0',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'combineNumbers',
+        'desc' => 'az_combineNumbers_desc',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => '0',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'useAlphabet',
+        'desc' => 'az_useAlphabet_desc',
         'type' => 'combo-boolean',
         'options' => '',
         'value' => '1',
         'lexicon' => 'siteatoz:properties',
     ),
-     array(
-        'name' => 'property2',
-        'desc' => 'mc_property2_desc',
+    array(
+        'name' => 'headingSeparator',
+        'desc' => 'az_headingSeparator_desc',
         'type' => 'textfield',
         'options' => '',
-        'value' => 'Some Text',
+        'value' => '&nbsp;|&nbsp;',
         'lexicon' => 'siteatoz:properties',
     ),
     array(
-        'name' => 'property3',
-        'desc' => 'mc_property3_desc',
-        'type' => 'list',
-        'options' => array(
-            array(
-                'name' => 'System Default',
-                'value' => 'System Default',
-                'menu' => '',
-            ),
-            array(
-                'name' => 'Yes',
-                'value' => 'Yes',
-                'menu' => '',
-            ),
-            array(
-                'name' => 'No',
-                'value' => 'No',
-                'menu' => '',
-            ),
-            array(
-                'name' => 'Parent',
-                'value' => 'Parent',
-                'menu' => '',
-            ),
-        ),
-        'value' => 'System Default',
+        'name' => 'alphabetHeadingStart',
+        'desc' => 'az_alphabetHeadingStart_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'A',
         'lexicon' => 'siteatoz:properties',
     ),
- );
+    array(
+        'name' => 'alphabetHeadingEnd',
+        'desc' => 'az_alphabetHeadingEnd_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'Z',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'title',
+        'desc' => 'az_title_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => 'pagetitle',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'headingLinksTpl',
+        'desc' => 'az_headingLinksTpl_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'noData',
+        'desc' => 'az_noData_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'cssFile',
+        'desc' => 'az_cssFile_desc',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '',
+        'lexicon' => 'siteatoz:properties',
+    ),
+    array(
+        'name' => 'useJS',
+        'desc' => 'az_useJS_desc',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => '0',
+        'lexicon' => 'siteatoz:properties',
+    ),
+);
 
 return $properties;
