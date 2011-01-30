@@ -2,7 +2,7 @@
 /**
  * SiteAtoZ snippet
  * @author Bob Ray <http://bobsguides.com>
- * @version 1.0.1
+ * @version 1.0.2
  * 01/25/2011
  *
  * This snippet was inspired by the work of
@@ -28,21 +28,21 @@
  *
  * Required parameters:
  * ---------------
- * @property parents - (string) Comma-separated list of ID's of container documents you want included (`0` for all docs)
- * @property tpl - (string) Tpl chunk used to format each entry; Default 'AzItemTpl'
+ * @property parents - (string) Comma-separated list of ID's of container documents you want included (`0` for all docs).
+ * @property tpl - (string) Tpl chunk used to format each entry; Default 'AzItemTpl'.
  *
  * Optional parameters:
  * ---------------
- * @property useNumbers - (boolean) Put a number array in front of the alphabet' default '0'
- * @property combineNumbers (boolean) group 0-9 titles together; default '0'
- * @property useAlphabet - (boolean) Use the Alphabet; default: '1'
- * @property headingSeparator - (string) separator to use between letters in heading; Default '&nbsp|&nbsp;'
- * @property alphabetHeadingStart - (string) Letter to start with; Default: 'A'
- * @property alphabetHeadingEnd - (string) Letter to end with; Default 'Z'
- * @property title - (string) Field to used for search; Default: pagetitle
- * @property headingLinksTpl - (string) A tpl containing the entire A-Z heading (useful if you'd like to use images)
- * @property noData - (string) String to show if search comes up empty
- * @property cssFile - (string) Path to css file
+ * @property useNumbers - (boolean) Put a number array in front of the alphabet; default '0'.
+ * @property combineNumbers (boolean) Group 0-9 titles together; default '0'.
+ * @property useAlphabet - (boolean) Use the Alphabet; default: '1'.
+ * @property headingSeparator - (string) Separator to use between letters in heading; Default '&nbsp|&nbsp;'.
+ * @property alphabetHeadingStart - (string) Letter to start with; Default: 'A'.
+ * @property alphabetHeadingEnd - (string) Letter to end with; Default 'Z'.
+ * @property title - (string) Field to used for search; Default: pagetitle.
+ * @property headingLinksTpl - (string) A tpl containing the entire A-Z heading (useful if you'd like to use images).
+ * @property noData - (string) String to show if search comes up empty.
+ * @property cssFile - (string) Path to css file.
  * @property useJS - (boolean) - Use JS to hide entries until link is clicked.
  *
  * All other parameters are those of getResources. They should all work as they do for getResources with two exceptions:
@@ -52,9 +52,9 @@
 
 /* JS script from: http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
 
-/* These two lines allow the snippet to run in development environments if the two system settings exist */
-$azAssetsUrl =  $modx->getOption('az_base_url', null, $modx->getOption('assets_url') . 'components/siteatoz/assets/');
-$azAssetsPath =  $modx->getOption('az_base_path', null, $modx->getOption('assets_path') . 'components/siteatoz/assets/');
+/* These two lines allow the snippet to run in development environments if the two system settings exist -- do not change or remove them */
+$azAssetsUrl =  $modx->getOption('az_base_url', null, $modx->getOption('assets_url') . 'components/siteatoz/');
+$azAssetsPath =  $modx->getOption('az_base_path', null, $modx->getOption('assets_path') . 'components/siteatoz/');
 
 $output = '';
 $header = array();
