@@ -56,6 +56,9 @@
 $azAssetsUrl =  $modx->getOption('az_base_url', null, $modx->getOption('assets_url') . 'components/siteatoz/assets/');
 $azAssetsPath =  $modx->getOption('az_base_path', null, $modx->getOption('assets_path') . 'components/siteatoz/assets/');
 
+$output = '';
+$header = array();
+
 /* save some typing */
 $sp =& $scriptProperties;
 
@@ -81,6 +84,7 @@ $alphabetHeadingEnd = (empty($sp['alphabetHeadingEnd']))? 'Z' : $sp['alphabetHea
 $useNumbers = $sp['useNumbers'] === '1'? true : false;
 $combineNumbers = $sp['combineNumbers'] === '1'? true : false;
 $useAlphabet = $sp['useAlphabet'] === '0'? false: true;
+$useJS = $sp['useJS'] == '1'? true : false;
 
 if ($combineNumbers) {
     $n = array('[0-9]');
