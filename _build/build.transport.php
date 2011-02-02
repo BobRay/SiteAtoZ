@@ -30,8 +30,8 @@
 
 /* Set package info */
 define('PKG_NAME','siteatoz');
-define('PKG_VERSION','1.0.2');
-define('PKG_RELEASE','Beta1');
+define('PKG_VERSION','1.0.3');
+define('PKG_RELEASE','beta1');
 define('PKG_CATEGORY','SiteAtoZ');
 
 /* Set package options - you can turn these on one-by-one

@@ -2,7 +2,7 @@
 /**
  * SiteAtoZ snippet
  * @author Bob Ray <http://bobsguides.com>
- * @version 1.0.2
+ * @version 1.0.3
  * 01/25/2011
  *
  * This snippet was inspired by the work of

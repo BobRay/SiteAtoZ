@@ -1,5 +1,10 @@
 Changelog for SiteAtoZ
 
+Version 1.0.3
+-------------
+Fixed bug in transport package
+Added tutorial to docs
+
 Version 1.0.2
 -------------
 Added JS to hide and show sections
