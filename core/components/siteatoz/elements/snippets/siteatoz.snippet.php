@@ -65,11 +65,10 @@ $sp =& $scriptProperties;
 $documentId = $modx->resource->get('id');
 
 /* Set CSS file path */
-$cssFile = $modx->getOption('cssFile', $sp, $azAssetsUrl . 'css/siteatoz.css');
-if (empty($cssFile)) {
-    $cssFile = $azAssetsUrl . 'css/siteatoz.css';
+$cssFile = $modx->getOption('cssFile', $sp, $azAssetsUrl . 'css/siteatoz.css', true);
+if (!empty($cssFile)) {
+    $modx->regClientCSS($cssFile);
 }
-$modx->regClientCSS($cssFile);
 
 /* Set Tpl chunk to use for each item */
 $sp['tpl'] = empty($sp['tpl'])? 'AzItemTpl' : $sp['tpl'] ;
