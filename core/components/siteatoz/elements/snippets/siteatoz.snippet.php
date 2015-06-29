@@ -126,9 +126,6 @@ $whereProperty = !empty($sp['where'])? $sp['where'] : false;
 
 $noData = true;
 foreach ($alphabet as $k=>$v) {
-    if ($useJS) {
-        $output .= "\n\n" . '<div style="display:none;" class="az-section" id="a' . $v . '">' . "\n";
-    }
     if ($combineNumbers && ($v == '[0-9]') ) {
         $local_where = array(
             $title . ':REGEXP' => '^[0-9]',
@@ -153,16 +150,16 @@ foreach ($alphabet as $k=>$v) {
         $noData = false; /* found at least one */
         if ($useJS) {
            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" .');">' . $v . '</a>';
+            $output .= '    <div class="az-section" style="display:none;" id="a' . $v . '">' . "\n";
             $output .= ''; /* no anchors if using JS */
-            $output .= $ret;
+            $output .= '        <div class="az-items">' . $ret . '</div>';
         } else {
             $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="'.$modx->makeUrl($documentId).'#jump_to_' . $v . '">' . $v . '</a>';
-            $output .= "\n\n" . '        <p class="az-anchor">' . "<a name=\"jump_to_$v\" id=\"jump_to_$v\"></a>" . '<span class="az-anchor-letter">' . $v . "</span></p>\n";
-            $output .= $ret;
+            $output .= '    <div class="az-section">' . "\n";
+            $output .= '        <p class="az-anchor"><a id="jump_to_' . $v . '"><span class="az-anchor-letter">' . $v . "</span></a></p>\n";
+            $output .= '        <div class="az-items">' . $ret . '</div>';
         }
-    }
-    if ($useJS) {
-        $output .= "\n</div>";
+        $output .= "\n</div>"; /* closing az-section */
     }
 }
 if ($noData === true) {
