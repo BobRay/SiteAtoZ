@@ -30,8 +30,8 @@
 
 /* Set package info */
 define('PKG_NAME','siteatoz');
-define('PKG_VERSION','1.0.3');
-define('PKG_RELEASE','beta1');
+define('PKG_VERSION','1.1.0');
+define('PKG_RELEASE','pl');
 define('PKG_CATEGORY','SiteAtoZ');
 
 /* Set package options - you can turn these on one-by-one
@@ -58,6 +58,12 @@ $mtime = explode(" ", $mtime);
 $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
 set_time_limit(0);
+
+/* Prevent error notices in build */
+define('MODX_BASE_URL', 'http://localhost/addons/');
+define('MODX_MANAGER_URL', 'http://localhost/addons/manager/');
+define('MODX_ASSETS_URL', 'http://localhost/addons/assets/');
+define('MODX_CONNECTORS_URL', 'http://localhost/addons/connectors/');
 
 /* define sources */
 $root = dirname(dirname(__FILE__)) . '/';
