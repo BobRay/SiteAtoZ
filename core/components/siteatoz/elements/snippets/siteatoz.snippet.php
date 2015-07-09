@@ -78,7 +78,7 @@ $sp['tpl'] = empty($sp['tpl'])? 'AzItemTpl' : $sp['tpl'] ;
 $element = $modx->getObject('element', $sp, 'getResources');
 $sp['parents'] = empty($sp['parents'])? '0' : $sp['parents'];
 $sp['noData'] = empty($sp['noData'])? 'Sorry, No Resources were Retrieved.' : $sp['noData'];
-$headingSeparator = empty($sp['headingSeparator'])? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</span></div>\n";
+$headingSeparator = empty($sp['headingSeparator'])? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</div>\n";
 $title = empty($sp['title'])? 'pagetitle' : $sp['title'];
 $alphabetHeadingStart = (empty($sp['alphabetHeadingStart']))? 'A' : $sp['alphabetHeadingStart'];
 $alphabetHeadingEnd = (empty($sp['alphabetHeadingEnd']))? 'Z' : $sp['alphabetHeadingEnd'];
