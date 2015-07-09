@@ -7,8 +7,9 @@ Add option to use TV for title search (thanks to Jako)
 Add option to use snippets other than getResources (thanks to Jako)
 Removed extraneous span tag (thanks to Jako)
 Prevent output of empty sections (thanks to Jako)
+Fix JS to handle missing sections
 Improved output (thanks to Jako)
-
+Fix potential E_NOTICE bugs
 
 Version 1.0.3
 -------------
