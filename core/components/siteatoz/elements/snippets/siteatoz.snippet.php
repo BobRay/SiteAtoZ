@@ -75,7 +75,7 @@ if (!empty($cssFile)) {
 $sp['tpl'] = empty($sp['tpl'])? 'AzItemTpl' : $sp['tpl'] ;
 
 /* Set other options */
-$element = $modx->getObject('element', $sp, 'getResources');
+$element = $modx->getOption('element', $sp, 'getResources');
 $sp['parents'] = empty($sp['parents'])? '0' : $sp['parents'];
 $sp['noData'] = empty($sp['noData'])? 'Sorry, No Resources were Retrieved.' : $sp['noData'];
 $headingSeparator = empty($sp['headingSeparator'])? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</div>\n";
