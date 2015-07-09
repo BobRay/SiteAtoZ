@@ -3,6 +3,7 @@ Changelog for SiteAtoZ
 Version 1.1.0
 -------------
 Add option to have no CSS file (thanks to Jako)
+Add option to use TV for title search (thanks to Jako)
 
 
 Version 1.0.3
