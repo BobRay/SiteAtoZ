@@ -127,55 +127,35 @@ $whereProperty = !empty($sp['where'])? $sp['where'] : false;
 
 $noData = true;
 
-foreach ($alphabet as $k=>$v) {
-    if (substr($title, 0, 2) !== "tv") {
-        if ($combineNumbers && ($v == '[0-9]')) {
-            $local_where = array(
-                $title . ':REGEXP' => '^[0-9]',
-            );
-        } else {
-            $local_where = array(
-                $title . ':LIKE' => $v . '%',
-            );
-        }
-        $sp['where'] = $modx->toJSON($local_where);
+foreach ($alphabet as $k => $v) {
+    if ($combineNumbers && ($v == '[0-9]')) {
+        $local_where = array(
+            $title . ':REGEXP' => '^[0-9]',
+        );
     } else {
-        $tvTitle = substr($title, 2);
-        if ($combineNumbers && ($v == '[0-9]')) {
-            $sp['tvFilters'] = array();
-            for ($i = 0; $i <= 9; $i++) {
-                $sp['tvFilters'][] = $tvTitle . '==' . (string) $i . '%';
-            }
-            $sp['tvFilters'] = implode('||', $sp['tvFilters']);
-        } else {
-            $sp['tvFilters'] = $tvTitle . '==' . $v . '%';
-        }
+        $local_where = array(
+            $title . ':LIKE' => $v . '%',
+        );
     }
 
-    $elementObj = $modx->getObject('modSnippet',
-        array('name' => $sp['element']));
-    if ($elementObj) {
-        $elementObj->setCacheable(false);
-        $ret = $elementObj->process($sp);
-    } else {
-        $ret = '';
-    }
+    $sp['where'] = $modx->toJSON($local_where);
+    $ret = $modx->runSnippet('getResources', $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
     } else {
         $noData = false; /* found at least one */
         if ($useJS) {
-           $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" .');">' . $v . '</a>';
+            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" . ');">' . $v . '</a>';
+            $output .= '    <div class="az-section" style="display:none;" id="a' . $v . '">' . "\n";
             $output .= ''; /* no anchors if using JS */
-            $output .= $ret;
+            $output .= '        <div class="az-items">' . $ret . '</div>';
         } else {
-            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="'.$modx->makeUrl($documentId).'#jump_to_' . $v . '">' . $v . '</a>';
-            $output .= "\n\n" . '        <p class="az-anchor">' . "<a name=\"jump_to_$v\" id=\"jump_to_$v\"></a>" . '<span class="az-anchor-letter">' . $v . "</span></p>\n";
-            $output .= $ret;
+            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId) . '#jump_to_' . $v . '">' . $v . '</a>';
+            $output .= '    <div class="az-section">' . "\n";
+            $output .= '        <p class="az-anchor"><a id="jump_to_' . $v . '"><span class="az-anchor-letter">' . $v . "</span></a></p>\n";
+            $output .= '        <div class="az-items">' . $ret . '</div>';
         }
-    }
-    if ($useJS) {
-        $output .= "\n</div>";
+        $output .= "\n</div>"; /* closing az-section */
     }
 }
 if ($noData === true) {
