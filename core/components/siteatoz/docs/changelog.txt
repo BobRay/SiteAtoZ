@@ -1,5 +1,10 @@
 Changelog for SiteAtoZ
 
+Version 1.1.0
+-------------
+Add option to have no CSS file (thanks to Jako)
+
+
 Version 1.0.3
 -------------
 Fixed bug in transport package
