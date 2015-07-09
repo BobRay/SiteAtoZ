@@ -75,6 +75,7 @@ if (!empty($cssFile)) {
 $sp['tpl'] = empty($sp['tpl'])? 'AzItemTpl' : $sp['tpl'] ;
 
 /* Set other options */
+$element = $modx->getObject('element', $sp, 'getResources');
 $sp['parents'] = empty($sp['parents'])? '0' : $sp['parents'];
 $sp['noData'] = empty($sp['noData'])? 'Sorry, No Resources were Retrieved.' : $sp['noData'];
 $headingSeparator = empty($sp['headingSeparator'])? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</span></div>\n";
@@ -151,7 +152,14 @@ foreach ($alphabet as $k=>$v) {
         }
     }
 
-    $ret = $modx->runSnippet('getResources',$sp);
+    $elementObj = $modx->getObject('modSnippet',
+        array('name' => $sp['element']));
+    if ($elementObj) {
+        $elementObj->setCacheable(false);
+        $ret = $elementObj->process($sp);
+    } else {
+        $ret = '';
+    }
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
     } else {
