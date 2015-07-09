@@ -7,8 +7,9 @@
  *
  * This snippet was inspired by the work of
  * garryn, patricksamshire, and OpenGeek
+ * New features added by Jako
 */
-/** This snippet makes use of getResources to list records alphabetically, with an A to Z header of links to anchors in the text.
+/** This snippet makes use of getResources (or a similar element) to list records alphabetically, with an A to Z header of links to anchors in the text.
  *
  * By far the best practice to get it working is to call getResources directly with
  * a snippet tag in a resource. Once you get that working, and it shows every resource
@@ -72,20 +73,22 @@ if (!empty($cssFile)) {
 }
 
 /* Set Tpl chunk to use for each item */
-$sp['tpl'] = empty($sp['tpl'])? 'AzItemTpl' : $sp['tpl'] ;
-
+$sp['tpl'] = $modx->getOption('tpl', $sp, 'AzItemTpl', true);
+$headingLinksTpl = $modx->getOption('headingLinksTpl', $sp, '', true);
 /* Set other options */
 $element = $modx->getOption('element', $sp, 'getResources');
-$sp['parents'] = empty($sp['parents'])? '0' : $sp['parents'];
-$sp['noData'] = empty($sp['noData'])? 'Sorry, No Resources were Retrieved.' : $sp['noData'];
-$headingSeparator = empty($sp['headingSeparator'])? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</div>\n";
-$title = empty($sp['title'])? 'pagetitle' : $sp['title'];
-$alphabetHeadingStart = (empty($sp['alphabetHeadingStart']))? 'A' : $sp['alphabetHeadingStart'];
-$alphabetHeadingEnd = (empty($sp['alphabetHeadingEnd']))? 'Z' : $sp['alphabetHeadingEnd'];
-$useNumbers = $sp['useNumbers'] === '1'? true : false;
-$combineNumbers = $sp['combineNumbers'] === '1'? true : false;
-$useAlphabet = $sp['useAlphabet'] === '0'? false: true;
-$useJS = $sp['useJS'] == '1'? true : false;
+$sp['parents'] = $modx->getOption('parents', $sp, '0', true);
+$sp['noData'] = $modx->getOption('noData', $sp, 'Sorry, No Resources were Retrieved.');
+
+$headingSeparator = $modx->getOption('headingSeparator', $sp, '');
+$headingSeparator = empty($headingSeparator)? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</div>\n";
+$title = $modx->getOption('title', $sp, 'pagetitle', true);
+$alphabetHeadingStart = $modx->getOption('alphabetHeadingStart', $sp, 'A', true);
+$alphabetHeadingEnd = $modx->getOption('alphabetHeadingEnd', $sp, 'Z', true);
+$useNumbers = $modx->getOption('useNumbers', $sp, false, true);
+$combineNumbers = $modx->getOption('combineNumbers', $sp, false, true);
+$useAlphabet = $modx->getOption('useAlphabet', $sp, true);
+$useJS = $modx->getOption('useJS', $sp, false, true);
 
 if ($combineNumbers) {
     $n = array('[0-9]');
@@ -159,7 +162,7 @@ foreach ($alphabet as $k => $v) {
 if ($noData === true) {
     $modx->setPlaceholder('noData',$sp['noData']);
 }
-$headingLinks = (empty($sp['headingLinksTpl']))? implode($headingSeparator,$header) : $modx->getChunk($sp['headingLinksTpl']);
+$headingLinks = (empty($headingLinksTpl))? implode($headingSeparator,$header) : $modx->getChunk($headingLinksTpl);
 
 if (!empty($headingLinks)) {
     $output = '    <div class="az-header">' . "\n" . $headingLinks . "        </div>\n" . "    </div>\n" . $output;
