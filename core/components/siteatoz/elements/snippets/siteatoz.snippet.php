@@ -123,8 +123,6 @@ if ($useJS) {
     $modx->regClientStartupHTMLBlock($startupBlock);
 }
 
-$whereProperty = !empty($sp['where'])? $sp['where'] : false;
-
 $noData = true;
 
 foreach ($alphabet as $k => $v) {
