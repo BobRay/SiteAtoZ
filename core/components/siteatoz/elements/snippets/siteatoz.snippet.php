@@ -151,9 +151,9 @@ foreach ($alphabet as $k => $v) {
         } else {
             $sp['tvFilters'] = $tvtitle . '==' . $v . '%';
         }
+        $sp['where'] = '';
     }
 
-    $sp['where'] = $modx->toJSON($local_where);
     $ret = $modx->runSnippet('getResources', $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
