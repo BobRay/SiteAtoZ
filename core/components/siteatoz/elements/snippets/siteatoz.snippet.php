@@ -154,7 +154,7 @@ foreach ($alphabet as $k => $v) {
         $sp['where'] = '';
     }
 
-    $ret = $modx->runSnippet('getResources', $sp);
+    $ret = $modx->runSnippet($element, $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
     } else {
