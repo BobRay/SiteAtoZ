@@ -89,6 +89,7 @@ $useNumbers = $modx->getOption('useNumbers', $sp, false, true);
 $combineNumbers = $modx->getOption('combineNumbers', $sp, false, true);
 $useAlphabet = $modx->getOption('useAlphabet', $sp, true);
 $useJS = $modx->getOption('useJS', $sp, false, true);
+$tvFilters = $modx->getOption('tvFilters', $sp, '');
 
 if ($combineNumbers) {
     $n = array('[0-9]');
@@ -151,9 +152,13 @@ foreach ($alphabet as $k => $v) {
         } else {
             $sp['tvFilters'] = $tvtitle . '==' . $v . '%';
         }
-        $sp['where'] = '';
+    }
+    
+    if (!empty($tvFilters)) {
+        $sp['tvFilters'] .= $tvFilters;
     }
 
+    $sp['where'] = $modx->toJSON($local_where);
     $ret = $modx->runSnippet($element, $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
@@ -186,4 +191,3 @@ if ($noData) {
 }
 $output = '<div class="az-outer">' . $output . '</div>';
 return $output;
-
