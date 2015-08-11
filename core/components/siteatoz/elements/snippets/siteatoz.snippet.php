@@ -129,14 +129,28 @@ if ($useJS) {
 $noData = true;
 
 foreach ($alphabet as $k => $v) {
-    if ($combineNumbers && ($v == '[0-9]')) {
-        $local_where = array(
-            $title . ':REGEXP' => '^[0-9]',
-        );
+    if (substr($title, 0, 2 ) !== "tv") {
+        if ($combineNumbers && ($v == '[0-9]') ) {
+            $local_where = array(
+                $title . ':REGEXP' => '^[0-9]',
+            );
+        } else {
+            $local_where = array(
+                $title . ':LIKE' => $v . '%',
+            );
+        }
+        $sp['where'] = $modx->toJSON($local_where);
     } else {
-        $local_where = array(
-            $title . ':LIKE' => $v . '%',
-        );
+        $tvtitle = substr($title, 2);
+        if ($combineNumbers && ($v == '[0-9]') ) {
+            $sp['tvFilters'] = array();
+            for ($i = 0; $i <= 9; $i++) {
+                $sp['tvFilters'][] = $tvtitle . '==' . (string) $i . '%';
+            }
+            $sp['tvFilters'] = implode('||', $sp['tvFilters']);
+        } else {
+            $sp['tvFilters'] = $tvtitle . '==' . $v . '%';
+        }
     }
 
     $sp['where'] = $modx->toJSON($local_where);
