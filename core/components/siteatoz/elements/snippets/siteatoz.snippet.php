@@ -152,13 +152,13 @@ foreach ($alphabet as $k => $v) {
         } else {
             $sp['tvFilters'] = $tvtitle . '==' . $v . '%';
         }
+        $sp['where'] = '';
     }
     
     if (!empty($tvFilters)) {
         $sp['tvFilters'] .= $tvFilters;
     }
 
-    $sp['where'] = $modx->toJSON($local_where);
     $ret = $modx->runSnippet($element, $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
