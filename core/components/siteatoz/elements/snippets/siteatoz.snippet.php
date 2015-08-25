@@ -156,7 +156,7 @@ foreach ($alphabet as $k => $v) {
     }
     
     if (!empty($tvFilters)) {
-        $sp['tvFilters'] .= $tvFilters;
+        $sp['tvFilters'] = (isset($sp['tvFilters'])) ? $sp['tvFilters'] . $tvfilters : $tvFilters;
     }
 
     $ret = $modx->runSnippet($element, $sp);
