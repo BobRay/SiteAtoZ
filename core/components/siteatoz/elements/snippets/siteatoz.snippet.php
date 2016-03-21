@@ -79,6 +79,7 @@ $headingLinksTpl = $modx->getOption('headingLinksTpl', $sp, '', true);
 $element = $modx->getOption('element', $sp, 'getResources');
 $sp['parents'] = $modx->getOption('parents', $sp, '0', true);
 $sp['noData'] = $modx->getOption('noData', $sp, 'Sorry, No Resources were Retrieved.');
+$sp['sortby'] = $modx->getOption('sortby', $sp, '{"pagetitle":"ASC"}', true);
 
 $headingSeparator = $modx->getOption('headingSeparator', $sp, '');
 $headingSeparator = empty($headingSeparator)? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</div>\n";
