@@ -1,5 +1,11 @@
 Changelog for SiteAtoZ
 
+Version 1.2.0
+-------------
+Make default sort order alpha ascending withing sections (thanks to Jsewill)
+Hide unsearchable docs by default (thanks to isaacniebeling)
+Add &hideUnsearchable property (thanks to isaacniebeling)
+
 Version 1.1.0
 -------------
 Add option to have no CSS file (thanks to Jako)

@@ -4,6 +4,10 @@
         >
 <p>The SiteAToZ snippet assumes that every entry on the list is a separate resource, so this snippet will not work for you if you only have one page of items and 
 you want to create A to Z links for them.</p>
+
+<p>&nbsp;</p>
+
+
 <h3>Features</h3>
 
 <ul>
@@ -18,6 +22,9 @@ you want to create A to Z links for them.</p>
    <li>Use a TV rather than the pagetitle for the title of entries</li>
    
 </ul>
+
+
+<p>&nbsp;</p>
 
 
 <h3>Making it Work</h3>
@@ -60,12 +67,25 @@ The <fixedpre>&where</fixedpre> property will be ignored because it interferes w
 <p>Once you have the A to Z listing, you can add any of the optional properties listed below.</p>
 
 
+<p>&nbsp;</p>
+
+<div class="box">
+    <p>As of Version 1.2.0-pl, documents marked as unsearchable are hidden by default. Use the <fixedpre>&showUnsearchable</fixedpre> property if you want to show them.</p>
+</div>
+
+<p>&nbsp;</p>
+
+
 <h3>Basic Use</h3>
 
 <pre><fixedpre>
 [[!SiteAtoZ? &parents=`6` &tpl=`MyAzItemTpl`]]
 </fixedpre></pre>
- 
+
+
+<p>&nbsp;</p>
+
+
 <h3>Properties</h3>
 
 <h4>Required Properties</h4>
@@ -88,6 +108,8 @@ The <fixedpre>&where</fixedpre> property will be ignored because it interferes w
   <li><fixedpre>&cssFile</fixedpre> - (string) Path to CSS file; use `0` for no CSS file</li>
   <li><fixedpre>&useJS</fixedpre> - (boolean) Use JavaScript to hide results until a letter is clicked on</li>
     <li><fixedpre>&element</fixedpre> - (string) Snippet to use; defaults to getResources</li>
+    <li><fixedpre>&showUnsearchable</fixedpre> - (string) Show docs marked as unsearchable; default: false
+    </li>
 </ul>
 <p>All other properties are those of <a href="http://rtfm.modx
 .com/display/ADDON/getResources#getResources-AvailableProperties">getResources</a>. They should all work as they do for getResources with two exceptions:</p>
