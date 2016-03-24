@@ -30,7 +30,7 @@
 
 /* Set package info */
 define('PKG_NAME','siteatoz');
-define('PKG_VERSION','1.1.0');
+define('PKG_VERSION','1.2.0');
 define('PKG_RELEASE','pl');
 define('PKG_CATEGORY','SiteAtoZ');
 
