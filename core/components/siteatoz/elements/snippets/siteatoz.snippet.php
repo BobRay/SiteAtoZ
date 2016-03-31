@@ -80,6 +80,8 @@ $element = $modx->getOption('element', $sp, 'getResources');
 $sp['parents'] = $modx->getOption('parents', $sp, '0', true);
 $sp['noData'] = $modx->getOption('noData', $sp, 'Sorry, No Resources were Retrieved.');
 $sp['sortby'] = $modx->getOption('sortby', $sp, '{"pagetitle":"ASC"}', true);
+$where = json_decode($modx->getOption('where', $sp, '{}', true), true);
+$where = ($where != null ? $where : array());
 
 $headingSeparator = $modx->getOption('headingSeparator', $sp, '');
 $headingSeparator = empty($headingSeparator)? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</div>\n";
@@ -144,6 +146,7 @@ foreach ($alphabet as $k => $v) {
     if ($hideUnsearchable) {
         $local_where['searchable'] = 1;
     }
+    $local_where += $where;
     $sp['where'] = $modx->toJSON($local_where);
     $ret = $modx->runSnippet('getResources', $sp);
     if (empty($ret)) {
@@ -177,4 +180,3 @@ if ($noData) {
 }
 $output = '<div class="az-outer">' . $output . '</div>';
 return $output;
-
