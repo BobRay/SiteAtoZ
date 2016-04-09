@@ -148,7 +148,7 @@ foreach ($alphabet as $k => $v) {
     }
     $local_where += $where;
     $sp['where'] = $modx->toJSON($local_where);
-    $ret = $modx->runSnippet('getResources', $sp);
+    $ret = $modx->runSnippet($element, $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
     } else {
