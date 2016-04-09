@@ -1,8 +1,13 @@
 Changelog for SiteAtoZ
 
+Version 1.3.0
+-------------
+Allow the use of a JSON-formatted &where property (thanks to Jsewill)
+Add support for the use of pdoResources
+
 Version 1.2.0
 -------------
-Make default sort order alpha ascending withing sections (thanks to Jsewill)
+Make default sort order alpha ascending within sections (thanks to Jsewill)
 Hide unsearchable docs by default (thanks to isaacniebeling)
 Add &hideUnsearchable property (thanks to isaacniebeling)
 
