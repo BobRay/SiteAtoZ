@@ -93,7 +93,7 @@ $combineNumbers = $modx->getOption('combineNumbers', $sp, false, true);
 $useAlphabet = $modx->getOption('useAlphabet', $sp, true);
 $useJS = $modx->getOption('useJS', $sp, false, true);
 
-$hideUnsearchable = $modx->getOption('hideUnsearchable', false);
+$hideUnsearchable = $modx->getOption('hideUnsearchable', $sp, true, true);
 
 if ($combineNumbers) {
     $n = array('[0-9]');
