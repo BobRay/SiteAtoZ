@@ -8,7 +8,7 @@
  * This snippet was inspired by the work of
  * garryn, patricksamshire, and OpenGeek
  * New features added by Jako
- */
+*/
 /** This snippet makes use of getResources (or a similar element) to list records alphabetically, with an A to Z header of links to anchors in the text.
  *
  * By far the best practice to get it working is to call getResources directly with
@@ -67,7 +67,7 @@ $documentId = $modx->resource->get('id');
 
 /* Set CSS file path */
 $cssFile = $modx->getOption('cssFile', $sp,
-  $azAssetsUrl . 'css/siteatoz.css', true);
+    $azAssetsUrl . 'css/siteatoz.css', true);
 if (!empty($cssFile)) {
     $modx->regClientCSS($cssFile);
 }
@@ -119,7 +119,7 @@ if ($useJS) {
     }
     $jsString = implode(',',$jsArray);
     $startupBlock =
-      "<script type=\"text/javascript\">
+        "<script type=\"text/javascript\">
 //<![CDATA[
         var ids= new Array([[+jstring]]);
         ";
@@ -136,11 +136,11 @@ $noData = true;
 foreach ($alphabet as $k => $v) {
     if ($combineNumbers && ($v == '[0-9]')) {
         $local_where = array(
-          $title . ':REGEXP' => '^[0-9]',
+            $title . ':REGEXP' => '^[0-9]',
         );
     } else {
         $local_where = array(
-          $title . ':LIKE' => $v . '%',
+            $title . ':LIKE' => $v . '%',
         );
     }
     if ($hideUnsearchable) {
