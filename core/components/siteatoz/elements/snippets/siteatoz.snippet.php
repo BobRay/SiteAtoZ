@@ -45,8 +45,12 @@
  * @property noData - (string) String to show if search comes up empty.
  * @property cssFile - (string) Path to css file.
  * @property useJS - (boolean) - Use JS to hide entries until link is clicked.
+<<<<<<< HEAD
  * @property hideUnsearchable - (boolean) - Only show items which have their "Searchable" box checked; default '0'.
  *
+=======
+ * @property hideUnsearchable - (boolean) - Hide unsearchable docs in list; default: true.
+>>>>>>> BobRay/master
  * All other parameters are those of getResources. They should all work as they do for getResources with two exceptions:
  * @property resources can be used to exclude documents (e.g., &resources=`-2,24`), but not to include them .
  * @property where will be ignored (it conflicts with the selection by initial letter).
@@ -80,6 +84,9 @@ $headingLinksTpl = $modx->getOption('headingLinksTpl', $sp, '', true);
 $element = $modx->getOption('element', $sp, 'getResources');
 $sp['parents'] = $modx->getOption('parents', $sp, '0', true);
 $sp['noData'] = $modx->getOption('noData', $sp, 'Sorry, No Resources were Retrieved.');
+$sp['sortby'] = $modx->getOption('sortby', $sp, '{"pagetitle":"ASC"}', true);
+$where = json_decode($modx->getOption('where', $sp, '{}', true), true);
+$where = ($where != null ? $where : array());
 
 $headingSeparator = $modx->getOption('headingSeparator', $sp, '');
 $headingSeparator = empty($headingSeparator)? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</div>\n";
@@ -91,6 +98,8 @@ $combineNumbers = $modx->getOption('combineNumbers', $sp, false, true);
 $useAlphabet = $modx->getOption('useAlphabet', $sp, true);
 $useJS = $modx->getOption('useJS', $sp, false, true);
 $hideUnsearchable = $modx->getOption('hideUnsearchable', $sp, '0', true);
+
+$hideUnsearchable = $modx->getOption('hideUnsearchable', false);
 
 if ($combineNumbers) {
     $n = array('[0-9]');
@@ -140,13 +149,20 @@ foreach ($alphabet as $k => $v) {
             $title . ':LIKE' => $v . '%',
         );
     }
+<<<<<<< HEAD
 
     if($hideUnsearchable == '1') {
         $local_where['searchable'] = 1;
     }
 
+=======
+    if ($hideUnsearchable) {
+        $local_where['searchable'] = 1;
+    }
+    $local_where += $where;
+>>>>>>> BobRay/master
     $sp['where'] = $modx->toJSON($local_where);
-    $ret = $modx->runSnippet('getResources', $sp);
+    $ret = $modx->runSnippet($element, $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
     } else {
@@ -178,4 +194,3 @@ if ($noData) {
 }
 $output = '<div class="az-outer">' . $output . '</div>';
 return $output;
-
