@@ -45,12 +45,7 @@
  * @property noData - (string) String to show if search comes up empty.
  * @property cssFile - (string) Path to css file.
  * @property useJS - (boolean) - Use JS to hide entries until link is clicked.
-<<<<<<< HEAD
- * @property hideUnsearchable - (boolean) - Only show items which have their "Searchable" box checked; default '0'.
- *
-=======
  * @property hideUnsearchable - (boolean) - Hide unsearchable docs in list; default: true.
->>>>>>> BobRay/master
  * All other parameters are those of getResources. They should all work as they do for getResources with two exceptions:
  * @property resources can be used to exclude documents (e.g., &resources=`-2,24`), but not to include them .
  * @property where will be ignored (it conflicts with the selection by initial letter).
@@ -97,9 +92,8 @@ $useNumbers = $modx->getOption('useNumbers', $sp, false, true);
 $combineNumbers = $modx->getOption('combineNumbers', $sp, false, true);
 $useAlphabet = $modx->getOption('useAlphabet', $sp, true);
 $useJS = $modx->getOption('useJS', $sp, false, true);
-$hideUnsearchable = $modx->getOption('hideUnsearchable', $sp, '0', true);
 
-$hideUnsearchable = $modx->getOption('hideUnsearchable', false);
+$hideUnsearchable = $modx->getOption('hideUnsearchable', $sp, true, true);
 
 if ($combineNumbers) {
     $n = array('[0-9]');
