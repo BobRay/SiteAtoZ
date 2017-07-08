@@ -1,7 +1,8 @@
 <?php
 /**
  * SiteAtoZ snippet
- * @author Bob Ray <http://bobsguides.com>
+ * @author Bob Ray <https://bobsguides.com>
+ * @Copyright 2011-2017 Bob Ray
  * @version 1.0.3
  * 01/25/2011
  *

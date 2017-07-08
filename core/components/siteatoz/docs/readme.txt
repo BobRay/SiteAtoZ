@@ -2,11 +2,12 @@
 Snippets: SiteAtoZ
 Chunks: AzItemTpl
 --------------------
-Author: Bob Ray <http://bobsguides.com>
+Author: Bob Ray <https://bobsguides.com>
+Copyright 2011-2017 Bob Ray
 
 SiteAtoZ produces an A to Z listing of selected resources using the getResources snippet.
 
-Official Documentation: http://bobsguides.com/siteatoz-tutorial.html
+Official Documentation: https://bobsguides.com/siteatoz-tutorial.html
 Bugs and Feature Requests: https://github.com/BobRay/SiteAtoZ/issues
-Questions: http://modxcms.com/forums
+Questions: https://forums.modx.com
 

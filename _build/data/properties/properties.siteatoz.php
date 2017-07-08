@@ -2,7 +2,7 @@
 
 /**
  * Default properties for the SiteAtoZ snippet
- * @author Bob Ray <http://bobsguides.com>
+ * @author Bob Ray <https://bobsguides.com>
  * 1/15/11
  *
  * @package siteatoz
