@@ -183,7 +183,12 @@ foreach ($alphabet as $k => $v) {
                 $output .= ''; /* no anchors if using JS */
                 $output .= '        <div class="az-items">' . $ret . '</div>';
             } else {
-                $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId) . '#jump_to_' . $v . '">' . $v . '</a>';
+                if (strpos($v, ':') !== false) {
+                    $displayCharacter = $v[0];
+                } else {
+                    $displayCharacter = $v;
+                }
+                $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId) . '#jump_to_' . $v . '">' . $displayCharacter . '</a>';
                 $output .= "\n" . '    <div class="az-section">' . "\n";
                 $output .= '        <p class="az-anchor"><a id="jump_to_' . $v . '"><span class="az-anchor-letter">' . $v . "</span></a></p>\n";
                 $output .= '        <div class="az-items">' . $ret . '</div>';
