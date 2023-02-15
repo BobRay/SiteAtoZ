@@ -50,6 +50,7 @@
  * All other parameters are those of getResources. They should all work as they do for getResources with two exceptions:
  * @property resources can be used to exclude documents (e.g., &resources=`-2,24`), but not to include them .
  * @property where will be ignored (it conflicts with the selection by initial letter).
+ * @property context context to search; defaults to default_context System Setting
  */
 
 /* JS script from: http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
@@ -96,6 +97,8 @@ $useJS = $modx->getOption('useJS', $sp, false, true);
 
 $hideUnsearchable = $modx->getOption('hideUnsearchable', $sp, true, true);
 
+$context = $modx->getOption('context', $sp, $modx->getOption('default_context', null, true));
+
 if ($combineNumbers) {
     $n = array('[0-9]');
 } else {
@@ -138,7 +141,7 @@ $noData = true;
 
 
 foreach ($alphabet as $k => $v) {
-    $local_where = array();
+    $local_where = array(array('context_key' => $context));
     $query = array();
 
     if ($hideUnsearchable) {
