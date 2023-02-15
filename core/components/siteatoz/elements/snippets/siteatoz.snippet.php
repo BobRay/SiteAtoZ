@@ -9,7 +9,7 @@
  * This snippet was inspired by the work of
  * garryn, patricksamshire, and OpenGeek
  * New features added by Jako
-*/
+ */
 /** This snippet makes use of getResources (or a similar element) to list records alphabetically, with an A to Z header of links to anchors in the text.
  *
  * By far the best practice to get it working is to call getResources directly with
@@ -55,8 +55,8 @@
 /* JS script from: http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
 
 /* These two lines allow the snippet to run in development environments if the two system settings exist -- do not change or remove them */
-$azAssetsUrl =  $modx->getOption('az_base_url', null, $modx->getOption('assets_url') . 'components/siteatoz/');
-$azAssetsPath =  $modx->getOption('az_base_path', null, $modx->getOption('assets_path') . 'components/siteatoz/');
+$azAssetsUrl = $modx->getOption('az_base_url', null, $modx->getOption('assets_url') . 'components/siteatoz/');
+$azAssetsPath = $modx->getOption('az_base_path', null, $modx->getOption('assets_path') . 'components/siteatoz/');
 
 $output = '';
 $header = array();
@@ -85,7 +85,7 @@ $where = json_decode($modx->getOption('where', $sp, '{}', true), true);
 $where = ($where != null ? $where : array());
 
 $headingSeparator = $modx->getOption('headingSeparator', $sp, '');
-$headingSeparator = empty($headingSeparator)? '<span class="az-separator">&nbsp;|&nbsp;</span></div>'. "\n" : $sp['headingSeparator'] . "</div>\n";
+$headingSeparator = empty($headingSeparator) ? '<span class="az-separator">&nbsp;|&nbsp;</span></div>' . "\n" : $sp['headingSeparator'] . "</div>\n";
 $title = $modx->getOption('title', $sp, 'pagetitle', true);
 $alphabetHeadingStart = $modx->getOption('alphabetHeadingStart', $sp, 'A', true);
 $alphabetHeadingEnd = $modx->getOption('alphabetHeadingEnd', $sp, 'Z', true);
@@ -99,32 +99,34 @@ $hideUnsearchable = $modx->getOption('hideUnsearchable', $sp, true, true);
 if ($combineNumbers) {
     $n = array('[0-9]');
 } else {
-    $n = range('0','9');
+    $n = range('0', '9');
 }
-$a = range($alphabetHeadingStart, $alphabetHeadingEnd);
+// $a = range($alphabetHeadingStart, $alphabetHeadingEnd);
+$a = $modx->getOption('alphabet', $scriptProperties, 'A,B,C,D,E,F,G,H,I,J,K,L:Ł,M,N,O,P,Q,R,S,T,U,V,W,Z', true);
+$a = explode(',', $a);
 $alphabet = array();
 
 if ($useNumbers) {
-    $alphabet=$n;
+    $alphabet = $n;
 }
 if ($useAlphabet) {
-    $alphabet = array_merge($alphabet,$a);
+    $alphabet = array_merge($alphabet, $a);
 }
-unset($n,$a);
+// unset($n,$a);
 
 if ($useJS) {
     $output = '';
     $jsArray = array();
-    foreach ($alphabet as $k=>$v) {
+    foreach ($alphabet as $k => $v) {
         $jsArray[] .= "'a" . $v . "'";
     }
-    $jsString = implode(',',$jsArray);
+    $jsString = implode(',', $jsArray);
     $startupBlock =
         "<script type=\"text/javascript\">
 //<![CDATA[
         var ids= new Array([[+jstring]]);
         ";
-    $startupBlock = str_replace('[[+jstring]]',$jsString, $startupBlock);
+    $startupBlock = str_replace('[[+jstring]]', $jsString, $startupBlock);
     $startupBlock .= file_get_contents($azAssetsPath . 'js/siteatoz.js');
     $startupBlock .= "
 //]]>
@@ -134,44 +136,63 @@ if ($useJS) {
 
 $noData = true;
 
+
 foreach ($alphabet as $k => $v) {
+    $local_where = array();
+    $query = array();
+
+    if ($hideUnsearchable) {
+        $local_where[] = array('searchable' => 1);
+    }
+
     if ($combineNumbers && ($v == '[0-9]')) {
         $local_where = array(
             $title . ':REGEXP' => '^[0-9]',
         );
     } else {
-        $local_where = array(
-            $title . ':LIKE' => $v . '%',
-        );
-    }
-    if ($hideUnsearchable) {
-        $local_where['searchable'] = 1;
-    }
-    $local_where += $where;
-    $sp['where'] = $modx->toJSON($local_where);
-    $ret = $modx->runSnippet($element, $sp);
-    if (empty($ret)) {
-        $header[] = '        <div class="az-no-results">' . $v;
-    } else {
-        $noData = false; /* found at least one */
-        if ($useJS) {
-            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" . ');">' . $v . '</a>';
-            $output .= '    <div class="az-section" style="display:none;" id="a' . $v . '">' . "\n";
-            $output .= ''; /* no anchors if using JS */
-            $output .= '        <div class="az-items">' . $ret . '</div>';
-        } else {
-            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId) . '#jump_to_' . $v . '">' . $v . '</a>';
-            $output .= '    <div class="az-section">' . "\n";
-            $output .= '        <p class="az-anchor"><a id="jump_to_' . $v . '"><span class="az-anchor-letter">' . $v . "</span></a></p>\n";
-            $output .= '        <div class="az-items">' . $ret . '</div>';
+        $temp = explode(':', $v);
+
+        $query = array();
+        foreach ($temp as $i => $q) {
+            if ($i == 0) {
+                $query[] = array($title . ':LIKE ' => $q . '%');
+            } else {
+                $query[] = array('OR:' . $title . ':LIKE ' => $q . '%');
+            }
         }
-        $output .= "\n</div>"; /* closing az-section */
+
+
+        $local_where[] = $query;
+
+//        $local_where += $query;
+        // echo "\nLOCAL: " . print_r($local_where, true);
+        $sp['where'] = $modx->toJSON($local_where);
+
+        // echo "\n WHERE: " . $sp['where'];
+        $ret = $modx->runSnippet($element, $sp);
+        if (empty($ret)) {
+            $header[] = '        <div class="az-no-results">' . $v;
+        } else {
+            $noData = false; /* found at least one */
+            if ($useJS) {
+                $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" . ');">' . $v . '</a>';
+                $output .= '    <div class="az-section" style="display:none;" id="a' . $v . '">' . "\n";
+                $output .= ''; /* no anchors if using JS */
+                $output .= '        <div class="az-items">' . $ret . '</div>';
+            } else {
+                $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId) . '#jump_to_' . $v . '">' . $v . '</a>';
+                $output .= "\n" . '    <div class="az-section">' . "\n";
+                $output .= '        <p class="az-anchor"><a id="jump_to_' . $v . '"><span class="az-anchor-letter">' . $v . "</span></a></p>\n";
+                $output .= '        <div class="az-items">' . $ret . '</div>';
+            }
+            $output .= "\n</div>"; /* closing az-section */
+        }
     }
 }
 if ($noData === true) {
-    $modx->setPlaceholder('noData',$sp['noData']);
+    $modx->setPlaceholder('noData', $sp['noData']);
 }
-$headingLinks = (empty($headingLinksTpl))? implode($headingSeparator,$header) : $modx->getChunk($headingLinksTpl);
+$headingLinks = (empty($headingLinksTpl)) ? implode($headingSeparator, $header) : $modx->getChunk($headingLinksTpl);
 
 if (!empty($headingLinks)) {
     $output = '    <div class="az-header">' . "\n" . $headingLinks . "        </div>\n" . "    </div>\n" . $output;
@@ -179,5 +200,5 @@ if (!empty($headingLinks)) {
 if ($noData) {
     $output = '    <p class="az-noData">' . $sp['noData'] . '</p>' . $output;
 }
-$output = '<div class="az-outer">' . $output . '</div>';
+$output = "\n" . '<div class="az-outer">' . $output . '</div>';
 return $output;
