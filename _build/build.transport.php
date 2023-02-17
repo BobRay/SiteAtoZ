@@ -36,7 +36,7 @@ define('PKG_CATEGORY','SiteAtoZ');
 
 /* Set package options - you can turn these on one-by-one
  * as you build the package
- * */
+ *  */
 $hasSnippets = true;
 $hasChunks = true;
 $hasPlugins = false;
