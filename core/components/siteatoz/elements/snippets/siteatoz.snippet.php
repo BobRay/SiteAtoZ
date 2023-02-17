@@ -139,7 +139,6 @@ if ($useJS) {
 
 $noData = true;
 
-
 foreach ($alphabet as $k => $v) {
     $local_where = array(array('context_key' => $context));
     $query = array();
@@ -170,11 +169,8 @@ foreach ($alphabet as $k => $v) {
 
     $local_where[] = $query;
 
-//        $local_where += $query;
-    // echo "\nLOCAL: " . print_r($local_where, true);
     $sp['where'] = $modx->toJSON($local_where);
 
-    // echo "\n WHERE: " . $sp['where'];
     $ret = $modx->runSnippet($element, $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
