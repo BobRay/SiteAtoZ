@@ -2,7 +2,7 @@
 /**
  * SiteAtoZ snippet
  * @author Bob Ray <https://bobsguides.com>
- * @Copyright 2011-2017 Bob Ray
+ * @Copyright 2011-2023 Bob Ray
  *
  * 01/25/2011
  *
