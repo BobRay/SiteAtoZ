@@ -2,7 +2,7 @@
 /**
  * SiteAtoZ Build Script
  *
- * Copyright 2011-2017 Bob Ray <https://bobsguides.com>
+ * Copyright 2011-2023 Bob Ray <https://bobsguides.com>
  *
  * SiteAtoZ is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -30,7 +30,7 @@
 
 /* Set package info */
 define('PKG_NAME','siteatoz');
-define('PKG_VERSION','1.3.1');
+define('PKG_VERSION','1.3.3');
 define('PKG_RELEASE','pl');
 define('PKG_CATEGORY','SiteAtoZ');
 
