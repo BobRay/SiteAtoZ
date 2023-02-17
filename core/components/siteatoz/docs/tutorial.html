@@ -1,11 +1,17 @@
-<p>The SiteAtoZ snippet for MODX Revolution makes use of getResources to list resources alphabetically, with an A to Z header of links to anchors in the text. Each section provides a sorted series of links to the selected resources. The snippet was inspired by the work of garryn, patricksamshire, and OpenGeek, but has been rewritten from scratch by Bob Ray for MODX Revolution.</p>
+<p>The SiteAtoZ snippet for MODX Revolution makes use of getResources to list resources alphabetically, with an A to Z header of links to anchors in the text. Each section provides a sorted series of links to the selected resources. The snippet was inspired by the work of garryn, patricksamshire, and OpenGeek, but has been rewritten from scratch by Bob Ray for MODX Revolution 2 and MODX Revolution 3.</p>
 
-<p>Updates in Version 1.1.0-pl thanks to Jako. Other updates and bugfixes by Jsewill and isaacniebeling.</p
-        >
-<p>The SiteAToZ snippet assumes that every entry on the list is a separate resource, so this snippet will not work for you if you only have one page of items and 
-you want to create A to Z links for them.</p>
+<div class="box">
+  <h3>Version 1.0.3 Upgrades</h3>
+     <ul>
+       <li>Add MODX 3 compatibility</li>
+       <li>Handle non-English alphabets</li>
+       <li>Add context awareness</li>
+       <li>Improve handling of numeric pagetitles</li>
+       <li>Allow multiple calls on same page</li>
+     </ul>
+</div>
 
-<p>&nbsp;</p>
+<p>The SiteAToZ snippet assumes that every entry on the list is a separate resource, so this snippet will not work for you if you only have one page of items, and you want to create A to Z links for them.</p>
 
 
 <h3>Features</h3>
@@ -13,7 +19,9 @@ you want to create A to Z links for them.</p>
 <ul>
    <li>Create A to Z jump links to selected documents</li>
    <li>Tpl chunk for formatting each item in the list</li>
-   <li>Use JavaScript to show only the section that's clicked on</li>
+   <li>(Optional) Use JavaScript to show only the section that's clicked on</li>
+   <li>Context awareness</li>
+   <li>Handles non-English alphabets</li>
    <li>Select resources by any field</li>
    <li>Sort resources by any field</li>
    <li>Include numbers 0-9 for resources with numeric pagetitles</li>
@@ -22,9 +30,6 @@ you want to create A to Z links for them.</p>
    <li>Use a TV rather than the pagetitle for the title of entries</li>
    
 </ul>
-
-
-<p>&nbsp;</p>
 
 
 <h3>Making it Work</h3>
@@ -43,28 +48,23 @@ getResources and SiteAtoZ.</p>
 </fixedpre></pre>
 <br />
 <p>Preview the AtoZDemo resource to see what resources it is selecting. You should see a list of all the resources
-on your site that are not published and not hidden from menus. Using the properties described <a href="https://rtfm.modx.com/display/ADDON/getResources">here</a>, set things up so that getResources shows exactly the resources you want to index with the SiteAtoZ snippet in the order you want (and no extra resources thrown in).
+on your site that are not published and not hidden from menus. Using the properties described <a href="https://docs.modx.com/current/en/extras/getresources/index">here</a>, set things up so that getResources shows exactly the resources you want to index with the SiteAtoZ snippet in the order you want (and no extra resources thrown in).
 </p>
 
-<p>Once the resources are listing correctly, duplicate the AzItemTpl chunk so it won't be overwritten by upgrades and call the new Tpl
+<p>Once the resources are listing correctly, duplicate the AzItemTpl chunk, so it won't be overwritten by upgrades. Call the new Tpl
     chunk MyAzItemTpl. Change the <fixedpre>&tpl</fixedpre> property
 in your getResources tag to match the name of your new Tpl chunk (<fixedpre>&tpl=`MyAzItemTpl`</fixedpre>). Clear the site cache and then make sure the output still looks good. If it doesn't, you probably misspelled something (in other words, the <fixedpre>&tpl</fixedpre> argument in the snippet tag doesn't match the name of the new Tpl chunk). Once the new Tpl chunk is working properly, you can modify it to
 meet your needs.</p>
 
 <p>All resource and TV fields should be available. Remember that if you show TVs in the Tpl chunk, you need to add <fixedpre>&includeTVs=`1`</fixedpre> <fixedpre>&processTVs=`1`</fixedpre> and <fixedpre>&tvPrefix=``</fixedpre> (unless your TV names start with &quot;tv.&quot;). If you will be showing the resource's content field (usually you won't need this), you'll need to include &includeContent=`1` as well.</p>
 
-<p>Once everything looks the way you want it to and getResources shows all the resources
-you want to index in the order and format you want them shown, just change "getResources" to 
-"SiteAtoZ" in the snippet tag on your AtoZDemo resource. Preview it again and you should see your A to Z listing. Because SiteAtoZ passes     all properties on to
-getResources, the selection should be exactly the same, but organized by first letter and with a set of jump links at the top of the page.</p>
+<p>Once everything looks the way you want it to and getResources shows all the resources you want to index in the order and format you want them shown, just change "getResources" to
+"SiteAtoZ" in the snippet tag on your AtoZDemo resource. Preview it again, and you should see your A to Z listing. Because SiteAtoZ passes all properties on to getResources, the selection should be exactly the same, but organized by first letter and with a set of jump links at the top of the page.</p>
 
 <p>Note: The <fixedpre>&resources</fixedpre> property can only be used to exclude resources (<fixedpre>&resources=`-12,19`</fixedpre>),
-using it to include docs not work because getResources will include those resources
-regardless of any other criteria and they will be included in every alphabet section.
+using it to include docs not work because getResources will include those resources regardless of any other criteria, and they will be included in every alphabet section.
 
 <p>Once you have the A to Z listing, you can add any of the optional properties listed below.</p>
-
-<p>&nbsp;</p>
 
 
 <h3>Basic Usage</h3>
@@ -77,30 +77,51 @@ regardless of any other criteria and they will be included in every alphabet sec
 
 <p>By default SiteAtoZ uses getResources, but you can add
     <fixedpre>&element=`pdoResources`</fixedpre>
-    to the tag and it will use pdoResources for the search. Be sure that you have the pdoTools package installed.
+    to the tag and it will use pdoResources for the search. Be sure that you have the pdoTools package installed. Some properties may have to be modified for pdoResources, but pdoResources can be significantly faster than getResources.
 </p>
 
-<p>&nbsp;</p>
+<h3>Non-English Alphabets (diacritics)</h3>
+
+<p>(Most of the credit for this feature goes to Marek Woźniak for his extensive testing during its development.)</p>
+
+<p>By default, SiteAtoZ uses the English alphabet: <fixedpre>A,B,C, ... Z</fixedpre>. Most diacritics will be handled fine with this method, but if you have pagetitles that begin with a diacritic, like these: <fixedpre>Ć, ć, Ę, ę, Ł, ł, Ń, ń, Ó, ó, Ś, ś, Ź, ź</fixedpre>, some of those pages might not show up in the listing. If so, you can use the <fixedpre>&alphabet</fixedpre> property tell SiteAtoZ to use an alternative alphabet, like this:</p>
+
+<pre><fixedpre>
+&alphabet = `A,B,C,D,E,F,G,H,I,J,K,L:Ł,M,N,O,P,Q,R,S:Ś,T,U,V,W,Z:Ź:Ż`;
+</fixedpre></pre>
+
+<p>Notice that the letters that should be treated as versions of the same letter, like <fixedpre>Z:Ź:Ż</fixedpre> are separated with colons rather than commas. The pages that start with any of the colon-separated letters will be grouped together in the listing.</p>
+
+<p>You only need to be concerned about diacritics that can appear as the first letter of a pagetitle. Many diacritics will be handled correctly even if you don't list them in the alphabet property, but there's no harm in listing them all. It will slow down the page loading by a few milliseconds, but you can avoid this by marking the page as cacheable, and/or calling the snippet cached.</p>
+
+<h3>Multiple Calls to SiteAtoZ on the Same Page</h3>
+
+<p>This is possible as of SiteAtoZ Version 1.0.3. Each call will create its own list, with its own alphabetical jumplist at the top.</p>
+
+<p>You can, for example show pages from separate contexts on the same page, even with duplicate pagetitles, without worrying about the links going to the wrong pages. As long as you use the <fixedpre>&context</fixedpre> property correctly in each tag (and optionally, the <fixedpre>&alphabet</fixedpre> property for multilingual sites), the links and the pagetitles will be correct.</p>
+
+<p>Note that the JavaScript option doesn't work properly with this feature. If you want to use the JS option, you need to put the calls to SiteAtoZ on separate pages.</p>
+
+<h3>Context Awareness</h3>
+
+<p>The <fixedpre>&context</fixedpre> property can be used to select the context for each call to SiteAtoZ. If you leave it out, the context set in the <code>default_context</code> System Setting will be used.</p>
+
+<p>By using the <fixedpre>&context</fixedpre> property, pages in different contexts will be appropriate for that context, and the context name will become part of the anchor for the jumplist. The links of the jumplist will also conform to any alias-related context settings that may differ between contexts, such as <fixedpre>use_alias_path</fixedpre>, or <fixedpre>friendly_alias_urls</fixedpre>.</p>
+
 
 <h3>The &amp;where Property</h3>
 
 <p>As of version 1.3.0, SiteAtoZ will let you use a JSON string for the
     <fixedpre>&where</fixedpre>
-    property in the tag (thanks to jSewill). See the examples at the bottom of <a
-            href="https://rtfm.modx.com/extras/revo/getresources">this page</a> for the proper formatting of the
-    property.
+    property in the tag (thanks to jSewill). See the examples at the bottom of <a href="https://rtfm.modx.com/extras/revo/getresources">this page</a> for the proper formatting of the property.
 </p>
 
-<p>&nbsp;</p>
 
 <div class="box">
-    <p>As of Version 1.2.0-pl, documents marked as unsearchable are hidden by default. Use the
-        <fixedpre>&showUnsearchable</fixedpre>
+    <p>As of Version 1.2.0-pl, documents marked as unsearchable are hidden by default. Use the <fixedpre>&showUnsearchable</fixedpre>
         property if you want to show them.
     </p>
 </div>
-
-<p>&nbsp;</p>
 
 
 <h3>Properties</h3>
@@ -116,7 +137,9 @@ regardless of any other criteria and they will be included in every alphabet sec
   <li><fixedpre>&useNumbers</fixedpre> - (boolean) Put a number array in front of the alphabet' default '0'</li>
   <li><fixedpre>&combineNumbers</fixedpre> (boolean) group 0-9 titles together; default '0'</li>
   <li><fixedpre>&useAlphabet</fixedpre> - (boolean) Use the Alphabet; default: '1' (set to '0' if all titles are numbers)</li>
-  <li><fixedpre>&headingSeparator</fixedpre> - (string) separator to use between letters in heading; Default '&nbsp|&nbsp;'</li>
+  <li><fixedpre>&context</fixedpre> - (string) Context you would like to display; Default: <fixedpre>default_context</fixedpre> System Setting</li>
+  <li><fixedpre>&alphabet</fixedpre> - (string) Comma-separated list of letters to use as headings to use for non-English alphabets; Default: <fixedpre>'A,B,C,D,..., Z'</fixedpre>.</li>
+  <li><fixedpre>&headingSeparator</fixedpre> - (string) separator to use between letters in heading; Default '&nbsp;|&nbsp;'</li>
   <li><fixedpre>&alphabetHeadingStart</fixedpre> - (string) Letter to start with; Default: 'A' (useful for putting separate sections of the alphabet on different pages)</li>
   <li><fixedpre>&alphabetHeadingEnd</fixedpre> - (string) Letter to end with; Default: 'Z'</li>
   <li><fixedpre>&title</fixedpre> - (string) Field to used for search; Default: pagetitle (other common options: longtitle, alias, menutitle); Prefix this with tv (no dot) to use a TV for the search; this should match the first placeholder in your Tpl chunk</li>
@@ -130,8 +153,8 @@ regardless of any other criteria and they will be included in every alphabet sec
     <li><fixedpre>&where</fixedpre> - (string) JSON-formatted string containing search criteria
     </li>
 </ul>
-<p>All other properties are those of <a href="https://rtfm.modx
-.com/display/ADDON/getResources#getResources-AvailableProperties">getResources</a>. They should all work as they do for getResources with one exception:</p>
+
+<p>All other properties are those of <a href="https://docs.modx.com/current/en/extras/getresources/index#available-properties">getResources</a>. They should all work as they do for getResources with one exception:</p>
 <ul>
   <li><fixedpre>&resources</fixedpre> can be used to exclude documents (e.g., <fixedpre>&resources=`-2</fixedpre>,24`), but not to include them.</li>
 </ul>
