@@ -22,7 +22,7 @@
  *
  * The &resources parameter can only be used to exclude resources (&resources=`-12,19`),
  * using it to include docs not work because getResources will include those resources
- * regardless of any other criteria and they will be included in every alphabet section.
+ * regardless of any other criteria, and they will be included in every alphabet section.
  * The &where parameter will be ignored because it interferes with the selection by initial letter.
  *
  * Simple use:
@@ -30,30 +30,33 @@
  *
  * Required parameters:
  * ---------------
- * @property parents - (string) Comma-separated list of ID's of container documents you want included (`0` for all docs).
- * @property tpl - (string) Tpl chunk used to format each entry; Default 'AzItemTpl'.
+ * @property $parents - (string) Comma-separated list of ID's of container documents you want included (`0` for all docs).
+ * @property $tpl - (string) Tpl chunk used to format each entry; Default 'AzItemTpl'.
  *
  * Optional parameters:
  * ---------------
- * @property useNumbers - (boolean) Put a number array in front of the alphabet; default '0'.
- * @property combineNumbers (boolean) Group 0-9 titles together; default '0'.
- * @property useAlphabet - (boolean) Use the Alphabet; default: '1'.
- * @property headingSeparator - (string) Separator to use between letters in heading; Default '&nbsp|&nbsp;'.
- * @property alphabetHeadingStart - (string) Letter to start with; Default: 'A'.
- * @property alphabetHeadingEnd - (string) Letter to end with; Default 'Z'.
- * @property title - (string) Field to used for search; Default: pagetitle.
- * @property headingLinksTpl - (string) A tpl containing the entire A-Z heading (useful if you'd like to use images).
- * @property noData - (string) String to show if search comes up empty.
- * @property cssFile - (string) Path to css file.
- * @property useJS - (boolean) - Use JS to hide entries until link is clicked.
- * @property hideUnsearchable - (boolean) - Hide unsearchable docs in list; default: true.
+ * @property $useNumbers - (boolean) Put a number array in front of the alphabet; default '0'.
+ * @property $combineNumbers (boolean) Group 0-9 titles together; default '0'.
+ * @property $useAlphabet - (boolean) Use the Alphabet; default: '1'.
+ * @property $headingSeparator - (string) Separator to use between letters in heading; Default '&nbsp|&nbsp;'.
+ * @property $alphabetHeadingStart - (string) Letter to start with; Default: 'A'.
+ * @property $alphabetHeadingEnd - (string) Letter to end with; Default 'Z'.
+ * @property $title - (string) Field to used for search; Default: pagetitle.
+ * @property $headingLinksTpl - (string) A tpl containing the entire A-Z heading (useful if you'd like to use images).
+ * @property $noData - (string) String to show if search comes up empty.
+ * @property $cssFile - (string) Path to css file.
+ * @property $useJS - (boolean) - Use JS to hide entries until link is clicked.
+ * @property $hideUnsearchable - (boolean) - Hide unsearchable docs in list; default: true.
  * All other parameters are those of getResources. They should all work as they do for getResources with two exceptions:
- * @property resources can be used to exclude documents (e.g., &resources=`-2,24`), but not to include them .
- * @property where will be ignored (it conflicts with the selection by initial letter).
- * @property context context to search; defaults to default_context System Setting
+ * @property $resources -  can be used to exclude documents (e.g., &resources=`-2,24`), but not to include them .
+ * @property $where - will be ignored (it conflicts with the selection by initial letter).
+ * @property $context - Context to search; defaults to default_context System Setting
+ * @property $alphabet - Alphabet to use; defaults to en ('A,B,C' ...,Z); see docs for using other alphabets
  */
 
 /* JS script from: http://support.internetconnection.net/CODE_LIBRARY/Javascript_Show_Hide.shtml */
+
+/** @var modX $modx */
 
 /* These two lines allow the snippet to run in development environments if the two system settings exist -- do not change or remove them */
 $azAssetsUrl = $modx->getOption('az_base_url', null, $modx->getOption('assets_url') . 'components/siteatoz/');
@@ -73,7 +76,6 @@ $cssFile = $modx->getOption('cssFile', $sp,
 if (!empty($cssFile)) {
     $modx->regClientCSS($cssFile);
 }
-
 /* Set Tpl chunk to use for each item */
 $sp['tpl'] = $modx->getOption('tpl', $sp, 'AzItemTpl', true);
 $headingLinksTpl = $modx->getOption('headingLinksTpl', $sp, '', true);
@@ -88,8 +90,6 @@ $where = ($where != null ? $where : array());
 $headingSeparator = $modx->getOption('headingSeparator', $sp, '');
 $headingSeparator = empty($headingSeparator) ? '<span class="az-separator">&nbsp;|&nbsp;</span></div>' . "\n" : $sp['headingSeparator'] . "</div>\n";
 $title = $modx->getOption('title', $sp, 'pagetitle', true);
-$alphabetHeadingStart = $modx->getOption('alphabetHeadingStart', $sp, 'A', true);
-$alphabetHeadingEnd = $modx->getOption('alphabetHeadingEnd', $sp, 'Z', true);
 $useNumbers = $modx->getOption('useNumbers', $sp, false, true);
 $combineNumbers = $modx->getOption('combineNumbers', $sp, false, true);
 $useAlphabet = $modx->getOption('useAlphabet', $sp, true);
@@ -99,29 +99,29 @@ $hideUnsearchable = $modx->getOption('hideUnsearchable', $sp, true, true);
 
 $context = $modx->getOption('context', $sp, $modx->getOption('default_context', null, true));
 
-if ($combineNumbers) {
-    $n = array('[0-9]');
-} else {
-    $n = range('0', '9');
-}
+
 // $a = range($alphabetHeadingStart, $alphabetHeadingEnd);
 $a = $modx->getOption('alphabet', $scriptProperties, 'A,B,C,D,E,F,G,H,I,J,K,L:Ł,M,N,O,P,Q,R,S,T,U,V,W,Z', true);
-$a = explode(',', $a);
-$alphabet = array();
 
 if ($useNumbers) {
-    $alphabet = $n;
+    $alph = $useAlphabet ? $a : '';
+    if ($combineNumbers) {
+
+        $a = $useAlphabet ? '[0-9],' . $alph : '[0-9]';
+    } else {
+        $a = '0,1,2,3,4,5,6,7,8,9,' . $alph;
+    }
 }
-if ($useAlphabet) {
-    $alphabet = array_merge($alphabet, $a);
-}
-// unset($n,$a);
+
+$a = explode(',', $a);
+
+$alphabet = $a;
 
 if ($useJS) {
     $output = '';
     $jsArray = array();
     foreach ($alphabet as $k => $v) {
-        $jsArray[] .= "'a" . $v . "'";
+        $jsArray[] .= "'a" . $v .  '_' . $context . "'";
     }
     $jsString = implode(',', $jsArray);
     $startupBlock =
@@ -149,12 +149,11 @@ foreach ($alphabet as $k => $v) {
     }
 
     if ($combineNumbers && ($v == '[0-9]')) {
-        $local_where = array(
+        $local_where[] = array(
             $title . ':REGEXP' => '^[0-9]',
         );
-    } else {
+    } elseif (strpos($v, ':') !== false) {
         $temp = explode(':', $v);
-
         $query = array();
         foreach ($temp as $i => $q) {
             if ($i == 0) {
@@ -163,40 +162,50 @@ foreach ($alphabet as $k => $v) {
                 $query[] = array('OR:' . $title . ':LIKE ' => $q . '%');
             }
         }
+    } else {
+        $query[] = array($title . ':LIKE ' => $v . '%');
+    }
 
 
-        $local_where[] = $query;
+
+    $local_where[] = $query;
 
 //        $local_where += $query;
-        // echo "\nLOCAL: " . print_r($local_where, true);
-        $sp['where'] = $modx->toJSON($local_where);
+    // echo "\nLOCAL: " . print_r($local_where, true);
+    $sp['where'] = $modx->toJSON($local_where);
 
-        // echo "\n WHERE: " . $sp['where'];
-        $ret = $modx->runSnippet($element, $sp);
-        if (empty($ret)) {
-            $header[] = '        <div class="az-no-results">' . $v;
+    // echo "\n WHERE: " . $sp['where'];
+    $ret = $modx->runSnippet($element, $sp);
+    if (empty($ret)) {
+        $header[] = '        <div class="az-no-results">' . $v;
+    } else {
+        $noData = false; /* found at least one */
+        if (strpos($v, ':') !== false) {
+            $displayCharacter = $v[0];
         } else {
-            $noData = false; /* found at least one */
-            if ($useJS) {
-                $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . "'" . ');">' . $v . '</a>';
-                $output .= '    <div class="az-section" style="display:none;" id="a' . $v . '">' . "\n";
-                $output .= ''; /* no anchors if using JS */
-                $output .= '        <div class="az-items">' . $ret . '</div>';
-            } else {
-                if (strpos($v, ':') !== false) {
-                    $displayCharacter = $v[0];
-                } else {
-                    $displayCharacter = $v;
-                }
-                $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId) . '#jump_to_' . $v . '">' . $displayCharacter . '</a>';
-                $output .= "\n" . '    <div class="az-section">' . "\n";
-                $output .= '        <p class="az-anchor"><a id="jump_to_' . $v . '"><span class="az-anchor-letter">' . $v . "</span></a></p>\n";
-                $output .= '        <div class="az-items">' . $ret . '</div>';
-            }
-            $output .= "\n</div>"; /* closing az-section */
+            $displayCharacter = $v;
         }
+        if ($useJS) {
+            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="[[~[[*id]]]]#" onclick="switchid(' . "'a" . $v . '_' . $context . "'" . ');">' . $displayCharacter . '</a>';
+            $output .= '    <div class="az-section" style="display:none;" id="a' . $v . '_' . $context . '">' . "\n";
+            $output .= ''; /* no anchors if using JS */
+            $output .= '        <div class="az-items">' . $ret . '</div>';
+        } else {
+            if (strpos($v, ':') !== false) {
+                $displayCharacter = $v[0];
+            } else {
+                $displayCharacter = $v;
+            }
+            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId,$context) . '#jump_to_' . $v . '_' . $context . '">' . $displayCharacter . '</a>';
+            $output .= "\n" . '    <div class="az-section">' . "\n";
+            $output .= '        <p class="az-anchor"><a id="jump_to_' . $v . '_' . $context . '"><span class="az-anchor-letter">' . $displayCharacter . "</span></a></p>\n";
+            $output .= '        <div class="az-items">' . $ret . '</div>';
+        }
+        $output .= "\n</div>"; /* closing az-section */
     }
 }
+
+
 if ($noData === true) {
     $modx->setPlaceholder('noData', $sp['noData']);
 }
