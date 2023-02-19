@@ -77,8 +77,10 @@ using it to include docs not work because getResources will include those resour
 
 <p>By default SiteAtoZ uses getResources, but you can add
     <fixedpre>&element=`pdoResources`</fixedpre>
-    to the tag and it will use pdoResources for the search. Be sure that you have the pdoTools package installed. Some properties may have to be modified for pdoResources, but pdoResources can be significantly faster than getResources.
-</p>
+    to the tag and it will use pdoResources for the search. Be sure that you have the pdoTools package installed. Some properties may have to be modified for pdoResources, but pdoResources can be significantly faster than getResources.</p>
+
+  <p>The pdoResources snippet is included in the pdoTools extra.</p>
+
 
 <h3>Non-English Alphabets (diacritics)</h3>
 
@@ -113,7 +115,16 @@ using it to include docs not work because getResources will include those resour
 
 <p>As of version 1.3.0, SiteAtoZ will let you use a JSON string for the
     <fixedpre>&where</fixedpre>
-    property in the tag (thanks to jSewill). See the examples at the bottom of <a href="https://rtfm.modx.com/extras/revo/getresources">this page</a> for the proper formatting of the property.
+  property in the tag (thanks to jSewill). This allows you to set additional criteria, such as limiting the output to selected templates, like this:</p>
+
+  <pre><fixedpre>
+    &where=`{"template:=":1}`
+    &where=`{"template:IN":[1,3,7]}`
+  </fixedpre></pre>
+
+  <p>See the examples at the bottom of <a href="https://rtfm.modx.com/extras/revo/getresources">this page</a> for the proper formatting of the property.
+
+  <p>Regardless of your <fixedpre>&where</fixedpre> property, SiteAtoZ will still divide the output using the alphabet. If your <fixedpre>&where</fixedpre> property is overly complex, it may not work.
 </p>
 
 
@@ -157,6 +168,16 @@ using it to include docs not work because getResources will include those resour
 <p>All other properties are those of <a href="https://docs.modx.com/current/en/extras/getresources/index#available-properties">getResources</a>. They should all work as they do for getResources with one exception:</p>
 <ul>
   <li><fixedpre>&resources</fixedpre> can be used to exclude documents (e.g., <fixedpre>&resources=`-2</fixedpre>,24`), but not to include them.</li>
+</ul>
+
+<h3>Troubleshooting</h3>
+
+<ul>
+  <li>Make sure getResources or pdoTools is installed</li>
+  <li>If you use pdoTools, put &element=`pdoResources` in the snippet tag.</li>
+  <li>If jumplist links later in the alphabet don't work, make sure they are not interfered with by other parts of your page design.</li>
+
+  <li>Be sure to include a &context property in the snippet call.</li>
 </ul>
 
 <p>&nbsp;</p>

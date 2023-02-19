@@ -49,7 +49,7 @@
  * @property $hideUnsearchable - (boolean) - Hide unsearchable docs in list; default: true.
  * All other parameters are those of getResources. They should all work as they do for getResources with two exceptions:
  * @property $resources -  can be used to exclude documents (e.g., &resources=`-2,24`), but not to include them .
- * @property $where - will be ignored (it conflicts with the selection by initial letter).
+ * @property $where - JSON string with additional criteria).
  * @property $context - Context to search; defaults to default_context System Setting
  * @property $alphabet - Alphabet to use; defaults to en ('A,B,C' ...,Z); see docs for using other alphabets
  */
@@ -85,7 +85,7 @@ $sp['parents'] = $modx->getOption('parents', $sp, '0', true);
 $sp['noData'] = $modx->getOption('noData', $sp, 'Sorry, No Resources were Retrieved.');
 $sp['sortby'] = $modx->getOption('sortby', $sp, '{"pagetitle":"ASC"}', true);
 $where = json_decode($modx->getOption('where', $sp, '{}', true), true);
-$where = ($where != null ? $where : array());
+$base_where = ($where != null ? $where : array());
 
 $headingSeparator = $modx->getOption('headingSeparator', $sp, '');
 $headingSeparator = empty($headingSeparator) ? '<span class="az-separator">&nbsp;|&nbsp;</span></div>' . "\n" : $sp['headingSeparator'] . "</div>\n";
@@ -98,10 +98,11 @@ $useJS = $modx->getOption('useJS', $sp, false, true);
 $hideUnsearchable = $modx->getOption('hideUnsearchable', $sp, true, true);
 
 $context = $modx->getOption('context', $sp, $modx->getOption('default_context', null, true));
+$sp['context'] = $context;
 
+$a = $modx->getOption('alphabet', $scriptProperties, 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,Z', true);
 
-// $a = range($alphabetHeadingStart, $alphabetHeadingEnd);
-$a = $modx->getOption('alphabet', $scriptProperties, 'A,B,C,D,E,F,G,H,I,J,K,L:Ł,M,N,O,P,Q,R,S,T,U,V,W,Z', true);
+// Ł
 
 if ($useNumbers) {
     $alph = $useAlphabet ? $a : '';
@@ -121,7 +122,7 @@ if ($useJS) {
     $output = '';
     $jsArray = array();
     foreach ($alphabet as $k => $v) {
-        $jsArray[] .= "'a" . $v .  '_' . $context . "'";
+        $jsArray[] .= "'a" . $v . '_' . $context . "'";
     }
     $jsString = implode(',', $jsArray);
     $startupBlock =
@@ -139,14 +140,13 @@ if ($useJS) {
 
 $noData = true;
 
+if ($hideUnsearchable) {
+    $base_where['searchable'] = 1;
+}
+
 foreach ($alphabet as $k => $v) {
-    $local_where = array(array('context_key' => $context));
     $query = array();
-
-    if ($hideUnsearchable) {
-        $local_where[] = array('searchable' => 1);
-    }
-
+    $local_where = $base_where;
     if ($combineNumbers && ($v == '[0-9]')) {
         $local_where[] = array(
             $title . ':REGEXP' => '^[0-9]',
@@ -166,11 +166,12 @@ foreach ($alphabet as $k => $v) {
     }
 
 
-
     $local_where[] = $query;
 
     $sp['where'] = $modx->toJSON($local_where);
 
+    // Uncomment next line to see JSON queries
+    // echo "\n\n<br><br>" . $sp['where'];
     $ret = $modx->runSnippet($element, $sp);
     if (empty($ret)) {
         $header[] = '        <div class="az-no-results">' . $v;
@@ -192,7 +193,7 @@ foreach ($alphabet as $k => $v) {
             } else {
                 $displayCharacter = $v;
             }
-            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId,$context) . '#jump_to_' . $v . '_' . $context . '">' . $displayCharacter . '</a>';
+            $header[] = '        <div class="az-headeritem"><a class="az-headeritem" href="' . $modx->makeUrl($documentId, $context) . '#jump_to_' . $v . '_' . $context . '">' . $displayCharacter . '</a>';
             $output .= "\n" . '    <div class="az-section">' . "\n";
             $output .= '        <p class="az-anchor"><a id="jump_to_' . $v . '_' . $context . '"><span class="az-anchor-letter">' . $displayCharacter . "</span></a></p>\n";
             $output .= '        <div class="az-items">' . $ret . '</div>';
